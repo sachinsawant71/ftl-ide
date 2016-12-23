@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import TabbedEditorView from '../components/TabbedEditorView';
+import WorkArea from './WorkArea';
+
+import 'react-tab-panel/index.css';
 
 class FTLApp extends Component {
     constructor(props) {
@@ -35,7 +38,7 @@ class FTLApp extends Component {
     }
 
     render() {
-        return <TabbedEditorView editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated}/>
+        return <WorkArea editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated} />
     }
 }
 
