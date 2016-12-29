@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import SplitterLayout from 'react-splitter-layout';
 import WorkArea from './WorkArea';
 import FTLNavBar from '../components/FTLNavBar';
+import SplitPane from 'react-split-pane';
 
 import 'react-tab-panel/index.css';
+import '@blueprintjs/core/dist/blueprint.css';
 
 class FTLApp extends Component {
     constructor(props) {
@@ -42,13 +43,10 @@ class FTLApp extends Component {
         return (
             <div className="ftl-app-main">
                 <FTLNavBar />
-                <SplitterLayout percentage secondaryInitialSize={85} className="ftl-splitter">
+                <SplitPane split="vertical" defaultSize="80%" primary="second" className="ftl-splitter">
                     <div>Left Side</div>
-                    <SplitterLayout secondaryInitialSize={200}>
-                        <WorkArea editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated} />
-                        <div>Right Side</div>
-                    </SplitterLayout>
-                </SplitterLayout>
+                    <WorkArea editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated} />
+                </SplitPane>
             </div>
         );
     }
