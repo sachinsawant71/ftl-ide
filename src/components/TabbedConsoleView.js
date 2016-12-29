@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TabPanel from 'react-tab-panel';
+import { Tab, TabList, TabPanel, Tabs } from '@blueprintjs/core';
 
 class TabbedConsoleView extends Component {
 
@@ -7,10 +7,22 @@ class TabbedConsoleView extends Component {
     // component to display in the tab panel.
     render() {
         return (
-            <TabPanel style={{marginTop: '8px' }} className="console-tabs">
-                <div tabTitle="Console">This is a console!</div>
-                <div tabTitle="Robot Output">This is the Robot Output</div>
-            </TabPanel>
+            <Tabs className="ftl-console-tabs">
+                <TabList>
+                    <Tab>Console</Tab>
+                    <Tab>Robot Output</Tab>
+                </TabList>
+
+                { /* Console Panel*/ }
+                <TabPanel>
+                    <div>This is a console!</div>
+                </TabPanel>
+
+            { /* Robot Output Panel*/ }
+                <TabPanel>
+                    <div>This is the Robot Output!</div>
+                </TabPanel>
+            </Tabs>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TabbedEditorView from '../components/TabbedEditorView';
+import SingleEditorView from '../components/SingleEditorView';
 import TabbedConsoleView from '../components/TabbedConsoleView';
 import SplitPane from 'react-split-pane';
 
@@ -8,7 +8,7 @@ class WorkArea extends Component {
     render() {
         return (
             <SplitPane split="horizontal" defaultSize="80%">
-                <TabbedEditorView {...this.props}/>
+                <SingleEditorView {...this.props}/>
                 <TabbedConsoleView />
             </SplitPane>
         )

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
+import '@blueprintjs/core/dist/blueprint.css';
 import 'codemirror/lib/codemirror.css';
 import './styles/app.css';
 

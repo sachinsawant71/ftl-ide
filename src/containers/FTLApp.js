@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import WorkArea from './WorkArea';
 import FTLNavBar from '../components/FTLNavBar';
 import SplitPane from 'react-split-pane';
-
-import 'react-tab-panel/index.css';
-import '@blueprintjs/core/dist/blueprint.css';
+import SidebarView from '../components/SidebarView';
 
 class FTLApp extends Component {
     constructor(props) {
@@ -18,6 +16,47 @@ class FTLApp extends Component {
                 {
                     fileName: 'file2.js',
                     contents: 'I am file 2, the best file'
+                },
+                {
+                    fileName: 'fileEmpty'
+                }
+            ],
+            activeFile: {
+                fileName: 'TestRobot.java',
+                contents: 'import * from wpilibj;',
+                filePath: '/com/zhiquanyeo/first/TestRobot.java'
+            },
+            projectFiles: [
+                {
+                    iconName: 'folder-close',
+                    label: 'com',
+                    hasCaret: true,
+                    isExpanded: true,
+                    childNodes: [
+                        {
+                            iconName: 'folder-close',
+                            label: 'zhiquanyeo',
+                            hasCaret: true,
+                            childNodes: [
+                                {
+                                    iconName: 'folder-close',
+                                    label: 'first',
+                                    hasCaret: true,
+                                    childNodes: [
+                                        {
+                                            iconName: 'document',
+                                            label: 'TestRobot.java'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    iconName: 'folder-close',
+                    label: 'edu',
+                    hasCaret: true
                 }
             ]
         }
@@ -44,8 +83,8 @@ class FTLApp extends Component {
             <div className="ftl-app-main">
                 <FTLNavBar />
                 <SplitPane split="vertical" defaultSize="80%" primary="second" className="ftl-splitter">
-                    <div>Left Side</div>
-                    <WorkArea editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated} />
+                    <SidebarView nodes={this.state.projectFiles}/>
+                    <WorkArea activeFile={this.state.activeFile} onEditorUpdated={this.handleEditorUpdated} />
                 </SplitPane>
             </div>
         );

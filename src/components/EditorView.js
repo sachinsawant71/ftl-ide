@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import 'codemirror/mode/clike/clike';
+import { NonIdealState } from '@blueprintjs/core';
 
 var DEFAULT_EDITOR_OPTIONS = {
     lineNumbers: true,
@@ -59,15 +60,20 @@ class EditorView extends Component {
     constructor(props) {
         super(props);
 
-        var editorInfo = props.editorInfo || {};
+        var editorInfo = props.editorInfo;
 
-        this.state = {
-            contents: editorInfo.contents || '',
-            cursor: editorInfo.cursor,
-            selections: editorInfo.selections,
-            scrollInfo: editorInfo.scrollInfo,
-            viewport: editorInfo.viewport,
-            editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions)
+        if (editorInfo !== undefined) {
+            this.state = {
+                contents: editorInfo.contents || '',
+                cursor: editorInfo.cursor,
+                selections: editorInfo.selections,
+                scrollInfo: editorInfo.scrollInfo,
+                viewport: editorInfo.viewport,
+                editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions)
+            }
+        }
+        else {
+            this.state = {};
         }
 
         // Pre-bind methods
@@ -129,13 +135,25 @@ class EditorView extends Component {
 
 
     render() {
-        return (
-            <CodeMirror ref={(editor) => { this.editorRef = editor; }} 
-                        value={this.state.contents} 
-                        onChange={this.handleChange} 
-                        onScroll={this.handleScroll}
-                        options={this.state.editorOptions} />
-        );
+        if (this.state.contents === undefined) {
+            const description = <span>There was no file selected. Select one in the file tree on the left</span>;
+            return (
+                <NonIdealState
+                    visual="document"
+                    title="No File Selected"
+                    description={description}
+                />
+            )
+        }
+        else {
+            return (
+                <CodeMirror ref={(editor) => { this.editorRef = editor; }} 
+                            value={this.state.contents} 
+                            onChange={this.handleChange} 
+                            onScroll={this.handleScroll}
+                            options={this.state.editorOptions} />
+            );
+        }
     }
 };
 
