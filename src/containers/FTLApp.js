@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import TabbedEditorView from '../components/TabbedEditorView';
+import SplitterLayout from 'react-splitter-layout';
 import WorkArea from './WorkArea';
+import FTLNavBar from '../components/FTLNavBar';
 
 import 'react-tab-panel/index.css';
 
@@ -38,7 +39,18 @@ class FTLApp extends Component {
     }
 
     render() {
-        return <WorkArea editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated} />
+        return (
+            <div className="ftl-app-main">
+                <FTLNavBar />
+                <SplitterLayout percentage secondaryInitialSize={85} className="ftl-splitter">
+                    <div>Left Side</div>
+                    <SplitterLayout secondaryInitialSize={200}>
+                        <WorkArea editors={this.state.editors} onEditorUpdated={this.handleEditorUpdated} />
+                        <div>Right Side</div>
+                    </SplitterLayout>
+                </SplitterLayout>
+            </div>
+        );
     }
 }
 

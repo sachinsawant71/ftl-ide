@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TabPanel, { TabStrip } from 'react-tab-panel';
+import TabPanel from 'react-tab-panel';
 import EditorView from './EditorView';
 
 /**
@@ -16,17 +16,18 @@ class TabbedEditorView extends Component {
 
     render() {
         return (
-            <TabPanel>
+            <TabPanel className="editor-tabs" style={{marginTop: '8px'}}>
             {
                 this.props.editors.map((editorInfo, i) => (
                     <EditorView key={'editor-' + i} id={'editor-' + i}
                                 editorInfo={editorInfo}
                                 onStateUpdated={this.handleEditorUpdated.bind(this, i)}
-                                tabTitle={editorInfo.fileName} />
+                                tabTitle={editorInfo.fileName}
+                                style={{marginLeft: '8px', marginRight: '8px'}}/>
                 ))
             }
             </TabPanel>
-            
+
         );
     }
 };

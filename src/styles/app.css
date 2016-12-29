@@ -1,7 +1,64 @@
+html {
+    height: 100%;
+}
+
+body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.ftl-app-main {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.ftl-splitter {
+    flex: 1 0 auto;
+}
+
+.navbar.ftl-navbar {
+    margin-bottom: 0;
+}
+
+.ftl-navbar .container {
+    width: inherit;
+    margin-left: inherit;
+    margin-right: inherit;
+}
+
+#root {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.react-tab-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 .CodeMirror {
     width: 100%;
+    height: 100%;
 }
 
 .ReactCodeMirror {
-    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }

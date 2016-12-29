@@ -7,7 +7,7 @@ class WorkArea extends Component {
 
     render() {
         return (
-            <SplitterLayout vertical secondaryInitialSize={150}>
+            <SplitterLayout vertical secondaryInitialSize={200}>
                 <TabbedEditorView {...this.props}/>
                 <TabbedConsoleView />
             </SplitterLayout>

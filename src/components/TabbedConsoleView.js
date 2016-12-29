@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TabPanel, { TabStrip } from 'react-tab-panel';
+import TabPanel from 'react-tab-panel';
 
 class TabbedConsoleView extends Component {
 
@@ -7,7 +7,7 @@ class TabbedConsoleView extends Component {
     // component to display in the tab panel.
     render() {
         return (
-            <TabPanel>
+            <TabPanel style={{marginTop: '8px' }} className="console-tabs">
                 <div tabTitle="Console">This is a console!</div>
                 <div tabTitle="Robot Output">This is the Robot Output</div>
             </TabPanel>
