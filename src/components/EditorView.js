@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import 'codemirror/mode/clike/clike';
-import { NonIdealState } from '@blueprintjs/core';
+import { NonIdealState, Spinner } from '@blueprintjs/core';
 
 var DEFAULT_EDITOR_OPTIONS = {
     lineNumbers: true,
@@ -63,16 +63,26 @@ class EditorView extends Component {
         var editorInfo = props.editorInfo;
 
         if (editorInfo !== undefined) {
-            this.state = {
-                contents: editorInfo.contents || '',
-                cursor: editorInfo.cursor,
-                selections: editorInfo.selections,
-                scrollInfo: editorInfo.scrollInfo,
-                viewport: editorInfo.viewport,
-                editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions)
+            if (editorInfo.isPending) {
+                this.state = {
+                    isPending: true
+                };
+                this.hasEditor = false;
             }
+            else {
+                this.state = {
+                    contents: editorInfo.contents || '',
+                    cursor: editorInfo.cursor,
+                    selections: editorInfo.selections,
+                    scrollInfo: editorInfo.scrollInfo,
+                    viewport: editorInfo.viewport,
+                    editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions),
+                    filePath: editorInfo.filePath,
+                    isPending: undefined
+                }
 
-            this.hasEditor = true;
+                this.hasEditor = true;
+            }
         }
         else {
             this.state = {};
@@ -92,6 +102,75 @@ class EditorView extends Component {
         // Component gets created here. Use the current state to configure the editor
         // First, add a ref to the editorInstance
         this.editorInstance = this.editorRef.getCodeMirror();
+
+        // Set up scroll position
+        if (this.state.scrollInfo) {
+            this.editorInstance.scrollTo(this.state.scrollInfo.left, this.state.scrollInfo.top);
+        }
+        else if (this.state.viewport) {
+            this.editorInstance.scrollIntoView(this.state.viewport);
+        }
+
+        if (this.state.cursor) {
+            this.editorInstance.setCursor(this.state.cursor);
+        }
+
+        if (this.state.selections && this.state.selections.length > 0) {
+            this.editorInstance.setSelections(this.state.selections);
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.editorInfo) {
+            var editorInfo = newProps.editorInfo;
+
+            if (editorInfo.isPending) {
+                this.setState({
+                    isPending: true,
+                    contents: undefined,
+                    filePath: undefined,
+                });
+                this.hasEditor = false;
+            }
+            else {
+                this.setState({
+                    contents: editorInfo.contents || '',
+                    cursor: editorInfo.cursor,
+                    selections: editorInfo.selections,
+                    scrollInfo: editorInfo.scrollInfo,
+                    viewport: editorInfo.viewport,
+                    editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions),
+                    filePath: editorInfo.filePath,
+                    isPending: undefined
+                });
+
+                this.hasEditor = true;
+            }
+        }
+        else {
+            this.setState({
+                contents: undefined,
+                filePath: undefined,
+                isPending: undefined,
+            });
+            this.hasEditor = false;
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.isPending !== nextState.isPending) {
+            return true;
+        }
+        if (this.state.filePath === nextState.filePath) {
+            return false;
+        }
+        return true;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.hasEditor && !this.editorInstance) {
+            this.editorInstance = this.editorRef.getCodeMirror();
+        }
 
         // Set up scroll position
         if (this.state.scrollInfo) {
@@ -142,13 +221,27 @@ class EditorView extends Component {
 
 
     render() {
-        if (this.state.contents === undefined) {
-            const description = <span>There was no file selected. Select one in the file tree on the left</span>;
+        if (this.state.isPending || this.state.contents === undefined) {
+            var visual;
+            var description;
+            var title;
+
+            if (this.state.isPending) {
+                visual = <Spinner />;
+                description = <span>Please wait, loading file</span>;
+                title = "Loading...";
+            }
+            else {
+                visual = "document";
+                description = <span>There was no file selected. Select one in the file tree on the left</span>;
+                title = "No File Selected";
+            }
+
             return (
                 <div className="ftl-non-ideal-host">
                     <NonIdealState
-                        visual="document"
-                        title="No File Selected"
+                        visual={visual}
+                        title={title}
                         description={description} />
                 </div>
             )

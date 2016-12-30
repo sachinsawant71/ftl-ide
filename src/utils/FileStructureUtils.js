@@ -7,6 +7,7 @@ function makeFolder(def, path) {
         hasCaret: true,
         label: def.label,
         key: path + '/' + def.label,
+        type: FileStructureTypes.FOLDER,
         childNodes: []
     }
 
@@ -29,7 +30,8 @@ function makeItem(def, path) {
     return {
         iconName: 'document',
         label: def.label,
-        key: path + '/' + def.label
+        key: path + '/' + def.label,
+        type: FileStructureTypes.ITEM
     }
 }
 

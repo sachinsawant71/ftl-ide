@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tree } from '@blueprintjs/core';
+import { FileStructureTypes } from '../Constants';
 
 class FileExplorer extends Component {
     constructor(props) {
@@ -19,6 +20,12 @@ class FileExplorer extends Component {
         this.forEachNode(this.state.nodes, (n) => n.isSelected = false);
 
         nodeData.isSelected = originallySelected === null ? true : !originallySelected;
+
+        if (nodeData.type === FileStructureTypes.ITEM) {
+            // key is the path
+            this.props.onFileSelected(nodeData.key);
+        }
+
         this.setState(this.state);
     }
 

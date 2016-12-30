@@ -11,17 +11,18 @@ class FTLApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeFile: {
-                fileName: 'TestRobot.java',
-                contents: 'import * from wpilibj;',
-                filePath: '/com/zhiquanyeo/first/TestRobot.java'
-            },
+            // activeFile: {
+            //     fileName: 'TestRobot.java',
+            //     contents: 'import * from wpilibj;',
+            //     filePath: '/com/zhiquanyeo/first/TestRobot.java'
+            // },
             // Experimental: Generate tree structure from test data
             projectFiles: generateTreeNodes(TestFileStructure)
             
         }
 
         this.handleEditorUpdated = this.handleEditorUpdated.bind(this);
+        this.handleFileSelected = this.handleFileSelected.bind(this);
     }
 
     handleEditorUpdated(index, editorInfo) {
@@ -38,12 +39,44 @@ class FTLApp extends Component {
         })
     }
 
+    handleFileSelected(filePath) {
+        // Purely experimental right now. 
+        if (filePath === '/com/zhiquanyeo/robot/TestRobot.java') {
+            this.setState({
+                activeFile: {
+                    contents: 'import * from wpilibj;',
+                    filePath: '/com/zhiquanyeo/robot/TestRobot.java'
+                },
+            });
+        }
+        else if (filePath === '/com/zhiquanyeo/robot/SomeOtherFile.java') {
+            this.setState({
+                activeFile: {
+                    contents: 'import * from someotherpackage;',
+                    filePath: '/com/zhiquanyeo/robot/SomeOtherFile.java'
+                },
+            });
+        }
+        else if (filePath === '/edu/wpilibj/Timer.java') {
+            this.setState({
+                activeFile: {
+                    isPending: true
+                }
+            });
+        }
+        else {
+            this.setState({
+                activeFile: undefined
+            });
+        }
+    }
+
     render() {
         return (
             <div className="ftl-app-main">
                 <FTLNavBar />
                 <SplitPane split="vertical" defaultSize="80%" primary="second" className="ftl-splitter">
-                    <SidebarView nodes={this.state.projectFiles}/>
+                    <SidebarView nodes={this.state.projectFiles} onFileSelected={this.handleFileSelected}/>
                     <WorkArea activeFile={this.state.activeFile} onEditorUpdated={this.handleEditorUpdated} />
                 </SplitPane>
             </div>
