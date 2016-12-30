@@ -12,9 +12,7 @@
     "react-addons-css-transition-group": "^15.4.1",
     "react-codemirror": "^0.3.0",
     "react-dom": "^15.4.1",
-    "react-split-pane": "^0.1.57",
-    "react-tab-panel": "^2.2.7",
-    "react-tabs": "^0.8.2"
+    "react-split-pane": "^0.1.57"
   },
   "scripts": {
     "start": "react-scripts start",

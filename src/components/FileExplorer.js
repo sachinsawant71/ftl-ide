@@ -47,8 +47,7 @@ class FileExplorer extends Component {
         return <Tree contents={this.state.nodes}
                      onNodeClick={this.handleNodeClick}
                      onNodeCollapse={this.handleNodeCollapse}
-                     onNodeExpand={this.handleNodeExpand}
-                     className={Classes.ELEVATION_0}/>
+                     onNodeExpand={this.handleNodeExpand}/>
     }
 };
 

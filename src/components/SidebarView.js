@@ -5,7 +5,7 @@ import FileExplorer from './FileExplorer';
 class SidebarView extends Component {
     render() {
         return (
-            <Tabs>
+            <Tabs className="ftl-sidebar">
                 <TabList>
                     <Tab>File Explorer</Tab>
                 </TabList>

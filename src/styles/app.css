@@ -148,6 +148,11 @@ body {
     margin-right: 8px;
 }
 
+.pt-tabs.ftl-sidebar {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
 .pt-collapse-list.ftl-file-path-list {
     margin-left: 8px;
     margin-right: 8px;

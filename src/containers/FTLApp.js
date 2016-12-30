@@ -8,19 +8,6 @@ class FTLApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editors: [
-                {
-                    fileName: 'file1.js',
-                    contents: 'Hello World, I am file 1'
-                },
-                {
-                    fileName: 'file2.js',
-                    contents: 'I am file 2, the best file'
-                },
-                {
-                    fileName: 'fileEmpty'
-                }
-            ],
             activeFile: {
                 fileName: 'TestRobot.java',
                 contents: 'import * from wpilibj;',
