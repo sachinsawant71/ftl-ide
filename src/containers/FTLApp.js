@@ -4,6 +4,9 @@ import FTLNavBar from '../components/FTLNavBar';
 import SplitPane from 'react-split-pane';
 import SidebarView from '../components/SidebarView';
 
+import { TestFileStructure } from '../data/TestData'
+import { generateTreeNodes } from '../utils/FileStructureUtils';
+
 class FTLApp extends Component {
     constructor(props) {
         super(props);
@@ -13,39 +16,9 @@ class FTLApp extends Component {
                 contents: 'import * from wpilibj;',
                 filePath: '/com/zhiquanyeo/first/TestRobot.java'
             },
-            projectFiles: [
-                {
-                    iconName: 'folder-open',
-                    label: 'com',
-                    hasCaret: true,
-                    isExpanded: true,
-                    childNodes: [
-                        {
-                            iconName: 'folder-close',
-                            label: 'zhiquanyeo',
-                            hasCaret: true,
-                            childNodes: [
-                                {
-                                    iconName: 'folder-close',
-                                    label: 'first',
-                                    hasCaret: true,
-                                    childNodes: [
-                                        {
-                                            iconName: 'document',
-                                            label: 'TestRobot.java'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    iconName: 'folder-close',
-                    label: 'edu',
-                    hasCaret: true
-                }
-            ]
+            // Experimental: Generate tree structure from test data
+            projectFiles: generateTreeNodes(TestFileStructure)
+            
         }
 
         this.handleEditorUpdated = this.handleEditorUpdated.bind(this);
