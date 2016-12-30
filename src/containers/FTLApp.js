@@ -75,7 +75,7 @@ class FTLApp extends Component {
         return (
             <div className="ftl-app-main">
                 <FTLNavBar />
-                <SplitPane split="vertical" defaultSize="80%" primary="second" className="ftl-splitter">
+                <SplitPane split="vertical" defaultSize="20%" minSize={200} className="ftl-splitter">
                     <SidebarView nodes={this.state.projectFiles} onFileSelected={this.handleFileSelected}/>
                     <WorkArea activeFile={this.state.activeFile} onEditorUpdated={this.handleEditorUpdated} />
                 </SplitPane>
