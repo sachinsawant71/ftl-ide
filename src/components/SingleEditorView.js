@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import EditorView from './EditorView';
 import FilePathView from './FilePathView';
 
+/**
+ * A Single CodeMirror based editor window
+ *
+ * This component provides a breadcrumb based file path view, and an
+ * EditorView component. This represents the currently active file
+ */
 class SingleEditorView extends Component {
     constructor(props) {
         super(props);

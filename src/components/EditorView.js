@@ -71,9 +71,12 @@ class EditorView extends Component {
                 viewport: editorInfo.viewport,
                 editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions)
             }
+
+            this.hasEditor = true;
         }
         else {
             this.state = {};
+            this.hasEditor = false;
         }
 
         // Pre-bind methods
@@ -82,6 +85,10 @@ class EditorView extends Component {
     }
 
     componentDidMount() {
+        if (!this.hasEditor) {
+            return;
+        }
+        
         // Component gets created here. Use the current state to configure the editor
         // First, add a ref to the editorInstance
         this.editorInstance = this.editorRef.getCodeMirror();
@@ -138,11 +145,12 @@ class EditorView extends Component {
         if (this.state.contents === undefined) {
             const description = <span>There was no file selected. Select one in the file tree on the left</span>;
             return (
-                <NonIdealState
-                    visual="document"
-                    title="No File Selected"
-                    description={description}
-                />
+                <div className="ftl-non-ideal-host">
+                    <NonIdealState
+                        visual="document"
+                        title="No File Selected"
+                        description={description} />
+                </div>
             )
         }
         else {

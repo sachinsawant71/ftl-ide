@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Classes, Tree } from '@blueprintjs/core';
+import { Tree } from '@blueprintjs/core';
 
 class FileExplorer extends Component {
     constructor(props) {
@@ -24,11 +24,13 @@ class FileExplorer extends Component {
 
     handleNodeExpand(nodeData) {
         nodeData.isExpanded = true;
+        nodeData.iconName = 'folder-open';
         this.setState(this.state);
     }
 
     handleNodeCollapse(nodeData) {
         nodeData.isExpanded = false;
+        nodeData.iconName = 'folder-close';
         this.setState(this.state);
     }
 

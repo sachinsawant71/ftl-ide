@@ -47,10 +47,11 @@ class FilePathView extends Component {
             <CollapsibleList 
                 className={classNames(Classes.BREADCRUMBS, 'ftl-file-path-list')}
                 dropdownTarget={<span className={Classes.BREADCRUMBS_COLLAPSED} />}
-                renderVisibleItem={this.renderBreadcrumb}>
-                {
-                    listObjs.map((itemInfo, i) => <MenuItem {...itemInfo} key={"node-" + i}/>)
-                }
+                renderVisibleItem={this.renderBreadcrumb}
+                visibleItemCount={5}>
+                    {
+                        listObjs.map((itemInfo, i) => <MenuItem {...itemInfo} key={"node-" + i}/>)
+                    }
             </CollapsibleList>
         );
     }

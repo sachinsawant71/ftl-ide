@@ -15,7 +15,7 @@ class FTLApp extends Component {
             },
             projectFiles: [
                 {
-                    iconName: 'folder-close',
+                    iconName: 'folder-open',
                     label: 'com',
                     hasCaret: true,
                     isExpanded: true,
