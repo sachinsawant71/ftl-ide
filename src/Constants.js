@@ -14,7 +14,7 @@ const ActionTypes = {
 
     // --- Directory Tree Related --- 
     // Most of these are TBD
-    FILE_STRUCTURE_UPDATED: 'FILE_STRUCTURE_UPDATED', // Action that occurs when the folder structure is updated from backend
+    WORKSPACE_UPDATED: 'WORKSPACE_UPDATED', // Action that occurs when the folder structure is updated from backend
     CREATE_NEW_FOLDER: 'CREATE_NEW_FOLDER', // Action from client side to create a new folder
     CREATE_NEW_FOLDER_COMPLETE: 'CREATE_NEW_FOLDER_COMPLETE',
     CREATE_NEW_ITEM: 'CREATE_NEW_ITEM', // Action from client side to create new item

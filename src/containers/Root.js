@@ -3,16 +3,19 @@ import { Provider } from 'react-redux';
 import configureStore from '../store/configureStore';
 import FTLApp from './FTLApp';
 import RemoteAPI from '../api/api';
-import { fileStructureUpdated } from '../actions/FileStructureActions';
+import { workspaceUpdated } from '../actions/WorkspaceActions';
 
 const store = configureStore();
 
-console.log('Getting initial workspace');
+// Get the initial workspace
 RemoteAPI.getWorkspace()
 .then(function (data) {
-    console.log('Workspace data: ', data);
-    store.dispatch(fileStructureUpdated(data));
-})
+    store.dispatch(workspaceUpdated(data));
+});
+
+RemoteAPI.on('workspaceUpdated', function (workspaceData) {
+
+});
 
 export default class Root extends Component {
     render() {

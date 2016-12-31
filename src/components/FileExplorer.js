@@ -19,7 +19,6 @@ class FileExplorer extends Component {
         this.setState({
             nodes: newProps.nodes
         });
-        console.log('newProps: ', newProps);
     }
 
     handleNodeClick(nodeData, nodePath, e) {

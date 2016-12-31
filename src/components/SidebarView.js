@@ -3,9 +3,6 @@ import { Tab, TabList, TabPanel, Tabs } from '@blueprintjs/core';
 import FileExplorer from './FileExplorer';
 
 class SidebarView extends Component {
-    componentWillReceiveProps(newProps) {
-        console.log('sidebar newProps: ', newProps);
-    }
     render() {
         return (
             <Tabs className="ftl-sidebar">

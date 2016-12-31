@@ -1,9 +1,9 @@
 import { ActionTypes } from '../Constants';
 import RemoteAPI from '../api/api';
 
-function fileStructureUpdated(newFileStruct) {
+function workspaceUpdated(newFileStruct) {
     return {
-        type: ActionTypes.FILE_STRUCTURE_UPDATED,
+        type: ActionTypes.WORKSPACE_UPDATED,
         fileStructure: newFileStruct
     }
 };
@@ -11,8 +11,8 @@ function fileStructureUpdated(newFileStruct) {
 export function getWorkspace() {
     return dispatch => {
         return RemoteAPI.getWorkspace()
-        .then(workspaceFiles => dispatch(fileStructureUpdated(workspaceFiles)));
+        .then(workspaceFiles => dispatch(workspaceUpdated(workspaceFiles)));
     }
 }
 
-export { fileStructureUpdated };
+export { workspaceUpdated };

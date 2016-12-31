@@ -4,49 +4,11 @@ import FTLNavBar from '../components/FTLNavBar';
 import SplitPane from 'react-split-pane';
 import SidebarView from '../components/SidebarView';
 
-import { TestFileStructure } from '../data/TestData'
-import { generateTreeNodes } from '../utils/FileStructureUtils';
-
 import { connect } from 'react-redux';
 
 import { loadActiveFile } from '../actions/FileActions';
 
 class FTLApp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            // activeFile: {
-            //     fileName: 'TestRobot.java',
-            //     contents: 'import * from wpilibj;',
-            //     filePath: '/com/zhiquanyeo/first/TestRobot.java'
-            // },
-            // Experimental: Generate tree structure from test data
-            projectFiles: generateTreeNodes(TestFileStructure)
-            
-        }
-
-        this.handleEditorUpdated = this.handleEditorUpdated.bind(this);
-    }
-
-    componentWillReceiveProps(newProps) {
-        console.log('App newProps: ', newProps);
-    }
-
-    handleEditorUpdated(index, editorInfo) {
-        return; // NOOP
-        // var oldEditors = this.state.editors;
-        // if (oldEditors[index]) {
-        //     oldEditors[index].contents = editorInfo.contents;
-        //     oldEditors[index].scrollInfo = editorInfo.scrollInfo;
-        //     oldEditors[index].selections = editorInfo.selections;
-        //     oldEditors[index].viewport = editorInfo.viewport;
-        //     oldEditors[index].cursor = editorInfo.cursor;
-        // }
-        // this.setState({
-        //     editors: oldEditors
-        // })
-    }
-
     render() {
         return (
             <div className="ftl-app-main">
