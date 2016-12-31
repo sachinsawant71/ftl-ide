@@ -11,12 +11,6 @@ import FilePathView from './FilePathView';
 class SingleEditorView extends Component {
     constructor(props) {
         super(props);
-
-        this.handleEditorUpdated = this.handleEditorUpdated.bind(this);
-    }
-
-    handleEditorUpdated(editorState) {
-        this.props.onEditorUpdated(0, editorState);
     }
 
     render() {
@@ -31,7 +25,7 @@ class SingleEditorView extends Component {
                 <div className="ftl-editor-host">
                     <EditorView id="active-editor"
                                 editorInfo={this.props.activeFile}
-                                onStateUpdated={this.handleEditorUpdated}
+                                onStateUpdated={this.props.onEditorUpdated}
                     />
                 </div>
             </div>

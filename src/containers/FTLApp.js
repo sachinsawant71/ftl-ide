@@ -26,7 +26,6 @@ class FTLApp extends Component {
         }
 
         this.handleEditorUpdated = this.handleEditorUpdated.bind(this);
-        this.handleFileSelected = this.handleFileSelected.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -34,51 +33,18 @@ class FTLApp extends Component {
     }
 
     handleEditorUpdated(index, editorInfo) {
-        var oldEditors = this.state.editors;
-        if (oldEditors[index]) {
-            oldEditors[index].contents = editorInfo.contents;
-            oldEditors[index].scrollInfo = editorInfo.scrollInfo;
-            oldEditors[index].selections = editorInfo.selections;
-            oldEditors[index].viewport = editorInfo.viewport;
-            oldEditors[index].cursor = editorInfo.cursor;
-        }
-        this.setState({
-            editors: oldEditors
-        })
-    }
-
-    handleFileSelected(filePath) {
-        // TBD - This should be mapped to dispatch loadFile
-        console.log('filepath: ', filePath);
-        // Purely experimental right now. 
-        if (filePath === '/com/zhiquanyeo/robot/TestRobot.java') {
-            this.setState({
-                activeFile: {
-                    contents: 'import * from wpilibj;',
-                    filePath: '/com/zhiquanyeo/robot/TestRobot.java'
-                },
-            });
-        }
-        else if (filePath === '/com/zhiquanyeo/robot/SomeOtherFile.java') {
-            this.setState({
-                activeFile: {
-                    contents: 'import * from someotherpackage;',
-                    filePath: '/com/zhiquanyeo/robot/SomeOtherFile.java'
-                },
-            });
-        }
-        else if (filePath === '/edu/wpilibj/Timer.java') {
-            this.setState({
-                activeFile: {
-                    isPending: true
-                }
-            });
-        }
-        else {
-            this.setState({
-                activeFile: undefined
-            });
-        }
+        return; // NOOP
+        // var oldEditors = this.state.editors;
+        // if (oldEditors[index]) {
+        //     oldEditors[index].contents = editorInfo.contents;
+        //     oldEditors[index].scrollInfo = editorInfo.scrollInfo;
+        //     oldEditors[index].selections = editorInfo.selections;
+        //     oldEditors[index].viewport = editorInfo.viewport;
+        //     oldEditors[index].cursor = editorInfo.cursor;
+        // }
+        // this.setState({
+        //     editors: oldEditors
+        // })
     }
 
     render() {
@@ -87,7 +53,7 @@ class FTLApp extends Component {
                 <FTLNavBar />
                 <SplitPane split="vertical" defaultSize="20%" minSize={200} className="ftl-splitter">
                     <SidebarView nodes={this.props.workspace} onFileSelected={this.props.onFileSelected}/>
-                    <WorkArea activeFile={this.props.activeFile} onEditorUpdated={this.handleEditorUpdated} />
+                    <WorkArea activeFile={this.props.activeFile} onEditorUpdated={this.props.onEditorUpdated} />
                 </SplitPane>
             </div>
         );
@@ -97,10 +63,8 @@ class FTLApp extends Component {
 // TBD Implement
 // This maps the redux store state into props
 function mapStateToProps(state) {
-    console.log('state: ', state);
     const { workspace, activeFile } = state; // state here represents the reducers
 
-    console.log('workspace: ', workspace);
     return {
         workspace,
         activeFile
@@ -112,6 +76,10 @@ function mapDispatchToProps(dispatch) {
         onFileSelected: (path) => {
             console.log('onFileSelected: ', path);
             dispatch(loadActiveFile(path));
+        },
+        onEditorUpdated: (editorData) => {
+            //console.log('Editor Data: ', editorData);
+            // TBD - Dispatch updated to saveFile and saveRecent
         }
     }
 }
