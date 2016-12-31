@@ -1,11 +1,13 @@
+import React from 'react';
 import { FileStructureTypes } from '../Constants';
+import { Tooltip } from '@blueprintjs/core';
 
 function makeFolder(def, path) {
     var ret = {
         iconName: def.isExpanded ? 'folder-open' : 'folder-close',
         isExpanded: !!def.isExpanded,
         hasCaret: true,
-        label: def.label,
+        label: <Tooltip content={def.label}>{def.label}</Tooltip>,
         key: path + '/' + def.label,
         type: FileStructureTypes.FOLDER,
         childNodes: []
@@ -29,7 +31,7 @@ function makeFolder(def, path) {
 function makeItem(def, path) {
     return {
         iconName: 'document',
-        label: def.label,
+        label: <Tooltip content={def.label}>{def.label}</Tooltip>,
         key: path + '/' + def.label,
         type: FileStructureTypes.ITEM
     }

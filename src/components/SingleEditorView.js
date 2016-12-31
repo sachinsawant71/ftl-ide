@@ -9,10 +9,6 @@ import FilePathView from './FilePathView';
  * EditorView component. This represents the currently active file
  */
 class SingleEditorView extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         var filepath;
         if (this.props.activeFile) {
