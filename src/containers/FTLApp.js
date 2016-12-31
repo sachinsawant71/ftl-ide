@@ -7,6 +7,10 @@ import SidebarView from '../components/SidebarView';
 import { TestFileStructure } from '../data/TestData'
 import { generateTreeNodes } from '../utils/FileStructureUtils';
 
+import { connect } from 'react-redux';
+
+import { loadActiveFile } from '../actions/FileActions';
+
 class FTLApp extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +29,10 @@ class FTLApp extends Component {
         this.handleFileSelected = this.handleFileSelected.bind(this);
     }
 
+    componentWillReceiveProps(newProps) {
+        console.log('App newProps: ', newProps);
+    }
+
     handleEditorUpdated(index, editorInfo) {
         var oldEditors = this.state.editors;
         if (oldEditors[index]) {
@@ -40,6 +48,8 @@ class FTLApp extends Component {
     }
 
     handleFileSelected(filePath) {
+        // TBD - This should be mapped to dispatch loadFile
+        console.log('filepath: ', filePath);
         // Purely experimental right now. 
         if (filePath === '/com/zhiquanyeo/robot/TestRobot.java') {
             this.setState({
@@ -76,12 +86,34 @@ class FTLApp extends Component {
             <div className="ftl-app-main">
                 <FTLNavBar />
                 <SplitPane split="vertical" defaultSize="20%" minSize={200} className="ftl-splitter">
-                    <SidebarView nodes={this.state.projectFiles} onFileSelected={this.handleFileSelected}/>
-                    <WorkArea activeFile={this.state.activeFile} onEditorUpdated={this.handleEditorUpdated} />
+                    <SidebarView nodes={this.props.workspace} onFileSelected={this.props.onFileSelected}/>
+                    <WorkArea activeFile={this.props.activeFile} onEditorUpdated={this.handleEditorUpdated} />
                 </SplitPane>
             </div>
         );
     }
 }
 
-export default FTLApp;
+// TBD Implement
+// This maps the redux store state into props
+function mapStateToProps(state) {
+    console.log('state: ', state);
+    const { workspace, activeFile } = state; // state here represents the reducers
+
+    console.log('workspace: ', workspace);
+    return {
+        workspace,
+        activeFile
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onFileSelected: (path) => {
+            console.log('onFileSelected: ', path);
+            dispatch(loadActiveFile(path));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FTLApp);

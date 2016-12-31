@@ -8,11 +8,17 @@
   "dependencies": {
     "@blueprintjs/core": "^1.4.0",
     "classnames": "^2.2.5",
+    "event-emitter": "^0.3.4",
+    "guid": "0.0.12",
+    "promise": "^7.1.1",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.1",
     "react-codemirror": "^0.3.0",
     "react-dom": "^15.4.1",
-    "react-split-pane": "^0.1.57"
+    "react-redux": "^5.0.1",
+    "react-split-pane": "^0.1.57",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

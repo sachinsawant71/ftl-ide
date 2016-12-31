@@ -62,11 +62,17 @@ class EditorView extends Component {
 
         var editorInfo = props.editorInfo;
 
-        if (editorInfo !== undefined) {
+        if (editorInfo !== undefined  && Object.keys(editorInfo).length > 0) {
             if (editorInfo.isPending) {
                 this.state = {
                     isPending: true
                 };
+                this.hasEditor = false;
+            }
+            else if (editorInfo.isError) {
+                this.setState({
+                    isError: true,
+                });
                 this.hasEditor = false;
             }
             else {
@@ -121,12 +127,22 @@ class EditorView extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.editorInfo) {
+        if (newProps.editorInfo && Object.keys(newProps.editorInfo).length > 0) {
             var editorInfo = newProps.editorInfo;
 
             if (editorInfo.isPending) {
                 this.setState({
                     isPending: true,
+                    isError: undefined,
+                    contents: undefined,
+                    filePath: undefined,
+                });
+                this.hasEditor = false;
+            }
+            else if (editorInfo.isError) {
+                this.setState({
+                    isPending: undefined,
+                    isError: true,
                     contents: undefined,
                     filePath: undefined,
                 });
@@ -141,7 +157,8 @@ class EditorView extends Component {
                     viewport: editorInfo.viewport,
                     editorOptions: Object.assign({}, DEFAULT_EDITOR_OPTIONS, editorInfo.editorOptions),
                     filePath: editorInfo.filePath,
-                    isPending: undefined
+                    isPending: undefined,
+                    isError: undefined
                 });
 
                 this.hasEditor = true;
@@ -152,6 +169,7 @@ class EditorView extends Component {
                 contents: undefined,
                 filePath: undefined,
                 isPending: undefined,
+                isError: undefined,
             });
             this.hasEditor = false;
         }
@@ -221,12 +239,17 @@ class EditorView extends Component {
 
 
     render() {
-        if (this.state.isPending || this.state.contents === undefined) {
+        if (this.state.isError || this.state.isPending || this.state.contents === undefined) {
             var visual;
             var description;
             var title;
 
-            if (this.state.isPending) {
+            if (this.state.isError) {
+                visual = "error";
+                description = <span>An error occured while loading the file</span>;
+                title = "Error";
+            }
+            else if (this.state.isPending) {
                 visual = <Spinner />;
                 description = <span>Please wait, loading file</span>;
                 title = "Loading...";

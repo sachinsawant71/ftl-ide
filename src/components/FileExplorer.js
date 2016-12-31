@@ -15,6 +15,13 @@ class FileExplorer extends Component {
         this.forEachNode = this.forEachNode.bind(this);
     }
 
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            nodes: newProps.nodes
+        });
+        console.log('newProps: ', newProps);
+    }
+
     handleNodeClick(nodeData, nodePath, e) {
         const originallySelected = nodeData.isSelected;
         this.forEachNode(this.state.nodes, (n) => n.isSelected = false);

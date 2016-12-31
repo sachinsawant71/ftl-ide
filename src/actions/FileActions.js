@@ -1,13 +1,14 @@
 import { ActionTypes } from '../Constants';
+import RemoteAPI from '../api/api';
 
-export function loadFile(filePath) {
+function loadFile(filePath) {
     return {
         type: ActionTypes.LOAD_FILE,
         filePath: filePath
     };
 };
 
-export function loadFileComplete(status, filePath, contents) {
+function loadFileComplete(status, filePath, contents) {
     return {
         type: ActionTypes.LOAD_FILE_COMPLETE,
         status: status,
@@ -15,6 +16,17 @@ export function loadFileComplete(status, filePath, contents) {
         contents: contents
     };
 };
+
+export function loadActiveFile(filePath) {
+    console.log('[action] loadActiveFile: ', filePath);
+    return dispatch => {
+        dispatch(loadFile(filePath));
+        
+        return RemoteAPI.getFile(filePath)
+        .then(fileInfo => dispatch(loadFileComplete(true, filePath, fileInfo.contents)))
+        .catch(() => dispatch(loadFileComplete(false, undefined, undefined)));
+    };
+}
 
 export function updateFile(filePath, contents) {
     return {
