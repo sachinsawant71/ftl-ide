@@ -71,6 +71,26 @@ class RemoteAPI {
         });
     }
 
+    updateFile(filePath, contents) {
+        return this.sendRequest({
+            type: 'updateFile',
+            filePath: filePath,
+            contents: contents
+        })
+        .then(function (updateResp) {
+            return {
+                status: true,
+                filePath: filePath
+            };
+        })
+        .catch(function () {
+            return {
+                status: false,
+                filePath: filePath
+            };
+        });
+    }
+
     // The idea here is that we create a callback with the guid that will get
     // executed when we receive a response, or we timeout
     sendRequest(request) {
@@ -132,6 +152,19 @@ class RemoteAPI {
                 });
             }
         }
+        else if (request.payload.type === 'updateFile') {
+            if (this.requestCallbacks[request.guid]) {
+                callback = this.requestCallbacks[request.guid];
+                callback({
+                    guid: request.guid,
+                    success: true,
+                    payload: {
+                        status: true,
+                        filePath: request.payload.filePath
+                    }
+                })
+            }
+        }
         else if (request.payload.type === 'loadFile') {
             if (this.requestCallbacks[request.guid]) {
                 callback = this.requestCallbacks[request.guid];
@@ -154,7 +187,7 @@ class RemoteAPI {
                 }
             }
         }
-        
+
     }
 }
 

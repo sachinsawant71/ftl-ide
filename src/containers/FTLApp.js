@@ -40,6 +40,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(loadActiveFile(path));
         },
         onEditorUpdated: (editorData) => {
+            
             //console.log('Editor Data: ', editorData);
             // TBD - Dispatch updated to saveFile and saveRecent
         }
