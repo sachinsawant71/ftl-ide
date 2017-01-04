@@ -7,6 +7,8 @@ import Guid from 'guid';
 import ee from 'event-emitter';
 import { generateTreeNodes } from '../utils/FileStructureUtils';
 
+import IO from 'socket.io-client';
+
 // TEST
 import { TestFileStructure } from '../data/TestData'
 
@@ -32,12 +34,34 @@ class RemoteAPI {
         this.socket = null;
         this.initialized = false;
         this.requestCallbacks = {};
+
+        this.sessionId = null;
     }
 
     initialize() {
         // Create the socket and hook up events
+        // TBD - Change this to just connect() once we start hosting properly
+        this.socket = IO.connect('http://localhost:3001');
+
+        this.socket.on('response', this.handleResponse.bind(this));
+
+        // Out of band messages
+        this.socket.on('registration', function (newId) {
+            if (this.sessionId !== null) {
+                console.warn('Already have a session ID. The server could have died. Sending recap');
+            }
+            else {
+                console.log('Got registration: ', newId);
+                this.sessionId = newId;
+                this.emit('sessionIdUpdated', this.sessionId);
+            }
+        }.bind(this));
 
         this.initialized = true;
+    }
+
+    handleResponse(response) {
+        console.log('response: ', response);
     }
 
     // Returns a promise of a fileinfo struct
@@ -134,6 +158,13 @@ class RemoteAPI {
                 }
             };
 
+            if (this.socket) {
+                this.socket.emit('request', reqObj);
+            }
+            else {
+                console.error('Socket not ready');
+            }
+            
             // TBD do the send here
             this.handleRequest(reqObj);
         }.bind(this));

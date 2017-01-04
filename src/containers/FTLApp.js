@@ -12,7 +12,7 @@ class FTLApp extends Component {
     render() {
         return (
             <div className="ftl-app-main">
-                <FTLNavBar />
+                <FTLNavBar {...this.props}/>
                 <SplitPane split="vertical" defaultSize="20%" minSize={200} className="ftl-splitter">
                     <SidebarView nodes={this.props.workspace} onFileSelected={this.props.onFileSelected}/>
                     <WorkArea activeFile={this.props.activeFile} onEditorUpdated={this.props.onEditorUpdated} />
@@ -25,9 +25,10 @@ class FTLApp extends Component {
 // TBD Implement
 // This maps the redux store state into props
 function mapStateToProps(state) {
-    const { workspace, activeFile } = state; // state here represents the reducers
+    const { workspace, activeFile, clientId } = state; // state here represents the reducers
 
     return {
+        clientId,
         workspace,
         activeFile
     }

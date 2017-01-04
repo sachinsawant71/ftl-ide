@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "concurrently": "^3.1.0",
     "react-scripts": "0.8.4"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.4.0",
     "classnames": "^2.2.5",
     "event-emitter": "^0.3.4",
+    "express": "^4.14.0",
     "guid": "0.0.12",
     "promise": "^7.1.1",
     "react": "^15.4.1",
@@ -18,12 +20,16 @@
     "react-redux": "^5.0.1",
     "react-split-pane": "^0.1.57",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "socket.io": "^1.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "startall": "concurrently \"npm run server\" \"npm start\"",
+    "server": "node server/index.js",
+    "client": "react-scripts start"
   }
 }
