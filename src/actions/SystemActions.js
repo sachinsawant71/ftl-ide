@@ -6,3 +6,10 @@ export function clientIdUpdated(newId) {
         clientId: newId
     };
 }
+
+export function connectionStatusUpdated(connected) {
+    return {
+        type: ActionTypes.CONNECTION_STATUS_UPDATED,
+        connected: connected
+    };
+}

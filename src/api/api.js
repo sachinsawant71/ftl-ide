@@ -57,6 +57,14 @@ class RemoteAPI {
             }
         }.bind(this));
 
+        this.socket.on('connect', function () {
+            this.emit('apiConnected');
+        }.bind(this));
+
+        this.socket.on('disconnect', function () {
+            this.emit('apiDisconnected');
+        }.bind(this));
+
         this.initialized = true;
     }
 
@@ -164,7 +172,7 @@ class RemoteAPI {
             else {
                 console.error('Socket not ready');
             }
-            
+
             // TBD do the send here
             this.handleRequest(reqObj);
         }.bind(this));

@@ -25,12 +25,13 @@ class FTLApp extends Component {
 // TBD Implement
 // This maps the redux store state into props
 function mapStateToProps(state) {
-    const { workspace, activeFile, clientId } = state; // state here represents the reducers
+    const { workspace, activeFile, clientId, connectionState } = state; // state here represents the reducers
 
     return {
         clientId,
         workspace,
-        activeFile
+        activeFile,
+        connectionState
     }
 }
 
@@ -41,7 +42,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(loadActiveFile(path));
         },
         onEditorUpdated: (editorData) => {
-            
+
             //console.log('Editor Data: ', editorData);
             // TBD - Dispatch updated to saveFile and saveRecent
         }

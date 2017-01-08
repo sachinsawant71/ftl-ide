@@ -4,7 +4,7 @@ import configureStore from '../store/configureStore';
 import FTLApp from './FTLApp';
 import RemoteAPI from '../api/api';
 import { workspaceUpdated } from '../actions/WorkspaceActions';
-import { clientIdUpdated } from '../actions/SystemActions';
+import { clientIdUpdated, connectionStatusUpdated } from '../actions/SystemActions';
 
 const store = configureStore();
 
@@ -16,6 +16,14 @@ RemoteAPI.getWorkspace()
 
 // Hook up out of band events
 console.log('Hooking up API events');
+RemoteAPI.on('apiConnected', function () {
+    store.dispatch(connectionStatusUpdated(true));
+});
+
+RemoteAPI.on('apiDisconnected', function () {
+    store.dispatch(connectionStatusUpdated(false));
+});
+
 RemoteAPI.on('sessionIdUpdated', function (sessionId) {
     console.log("Got new session ID: ", sessionId);
     store.dispatch(clientIdUpdated(sessionId));
