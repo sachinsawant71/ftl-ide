@@ -9,10 +9,10 @@ const ActionTypes = {
     LOAD_FILE_COMPLETE: 'LOAD_FILE_COMPLETE', // Returns the file path and contents of the file
     UPDATE_FILE: 'UPDATE_FILE', // action to update the backend file
     UPDATE_FILE_COMPLETE: 'UPDATE_FILE_COMPLETE', // File update on backend complete
-    UPDATE_RECENT_FILES: 'UPDATE_RECENT_FILES', // Save recent files to local cache
+    UPDATE_CACHED_FILE: 'UPDATE_CACHED_FILE', // Save recent files to local cache
 
 
-    // --- Directory Tree Related --- 
+    // --- Directory Tree Related ---
     // Most of these are TBD
     WORKSPACE_UPDATED: 'WORKSPACE_UPDATED', // Action that occurs when the folder structure is updated from backend
     CREATE_NEW_FOLDER: 'CREATE_NEW_FOLDER', // Action from client side to create a new folder

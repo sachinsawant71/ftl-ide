@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
 const Promise = require('promise');
+const fs = require('fs');
 
 const WORKSPACE_DIR = __dirname + '/workspaces';
 const RESOURCES_DIR = __dirname + '/resources';
@@ -10,7 +11,28 @@ class WorkspaceManager extends EventEmitter {
         super();
 
         this.d_workspaceName = workspaceName;
+        this.d_workspacePath = WORKSPACE_DIR + '/' + workspaceName;
 
+        this.d_workspacePromise = new Promise(function (fulfill, reject) {
+            if (!fs.existsSync(this.d_workspacePath)) {
+                // Create the new workspace
+                fs.mkdir(this.d_workspacePath, (err) => {
+                    if (err) {
+                        reject({
+                            message: 'Could not create workspace for ' + workspaceName,
+                            error: err
+                        });
+                    }
+                    else {
+                        // Start copying the templates as well
+                        fulfill();
+                    }
+                })
+            }
+            else {
+                fulfill();
+            }
+        }.bind(this));
         // Ensure that the workspace is set up
     }
 }

@@ -37,7 +37,7 @@ export function loadActiveFile(filePath) {
             filePromise = RemoteAPI.getFile(filePath)
             .then(fileInfo => {
                 // Cache this
-                dispatch(updateRecentFiles(filePath, fileInfo.contents));
+                dispatch(updateCachedFile(filePath, fileInfo.contents));
                 return fileInfo;
             });
         }
@@ -76,11 +76,21 @@ export function updateActiveFile(filePath, contents) {
     };
 }
 
-export function updateRecentFiles(filePath, contents) {
-    console.log('[action updateRecentFiles]');
+/**
+ * Update the locally cached copy of a specified file
+ *
+ * @method
+ * @param {string} filePath File path of the file being updated
+ * @param {string} contents Contents of the file being updated
+ *
+ * TODO: Also update viewport/scrollInfo
+ */
+export function updateCachedFile(filePath, contents, scrollInfo) {
+    console.log('[action updateCachedFile]');
     return {
-        type: ActionTypes.UPDATE_RECENT_FILES,
+        type: ActionTypes.UPDATE_CACHED_FILE,
         filePath: filePath,
-        contents: contents
+        contents: contents,
+        scrollInfo: scrollInfo,
     };
 };

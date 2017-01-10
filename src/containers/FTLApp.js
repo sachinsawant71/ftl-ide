@@ -6,7 +6,7 @@ import SidebarView from '../components/SidebarView';
 
 import { connect } from 'react-redux';
 
-import { loadActiveFile } from '../actions/FileActions';
+import { loadActiveFile, updateCachedFile } from '../actions/FileActions';
 
 class FTLApp extends Component {
     render() {
@@ -42,8 +42,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(loadActiveFile(path));
         },
         onEditorUpdated: (editorData) => {
-
-            //console.log('Editor Data: ', editorData);
+            dispatch(updateCachedFile(editorData.filePath, editorData.contents, editorData.scrollInfo));
             // TBD - Dispatch updated to saveFile and saveRecent
         }
     }

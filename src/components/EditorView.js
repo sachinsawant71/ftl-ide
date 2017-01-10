@@ -12,35 +12,35 @@ var DEFAULT_EDITOR_OPTIONS = {
     preserveScrollPosition: true
 };
 
-/** 
+/**
  * @class CursorPosition
- * @property {number} line 
+ * @property {number} line
  *      The line where the cursor is
- * @property {number} ch 
+ * @property {number} ch
  *      The character (or column) where the cursor is
  */
 
 /**
  * @class SelectionDescription
- * @property {CursorPosition} anchor 
+ * @property {CursorPosition} anchor
  *      The start of the selection
- * @property {CursorPosition} head 
+ * @property {CursorPosition} head
  *      The end of the selection
  */
 
 /**
  * @class Viewport
- * @property {number} from 
+ * @property {number} from
  *      Line number of the start of the viewport
- * @property {number} to 
+ * @property {number} to
  *      Line number of the end of the viewport
  */
 
 /**
  * @class EditorInfo
- * @property {string} contents 
+ * @property {string} contents
  *      The contents of this code editor
- * @property {CursorPosition} cursor 
+ * @property {CursorPosition} cursor
  *      The position of the cursor in the editor
  * @property {SelectionDescription[]} selections
  *      List of selections active in the editor
@@ -104,7 +104,7 @@ class EditorView extends Component {
         if (!this.hasEditor) {
             return;
         }
-        
+
         // Component gets created here. Use the current state to configure the editor
         // First, add a ref to the editorInstance
         this.editorInstance = this.editorRef.getCodeMirror();
@@ -220,7 +220,9 @@ class EditorView extends Component {
 
     handleChange(newCode) {
         this.setState({
-            contents: newCode
+            contents: newCode,
+            viewport: this.editorInstance.getViewport(),
+            scrollInfo: this.editorInstance.getScrollInfo(),
         });
 
         this.props.onStateUpdated(this.state);
@@ -271,9 +273,9 @@ class EditorView extends Component {
         }
         else {
             return (
-                <CodeMirror ref={(editor) => { this.editorRef = editor; }} 
-                            value={this.state.contents} 
-                            onChange={this.handleChange} 
+                <CodeMirror ref={(editor) => { this.editorRef = editor; }}
+                            value={this.state.contents}
+                            onChange={this.handleChange}
                             onScroll={this.handleScroll}
                             options={this.state.editorOptions} />
             );

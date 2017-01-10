@@ -7,7 +7,7 @@ class WorkArea extends Component {
 
     render() {
         return (
-            <SplitPane split="horizontal" defaultSize="80%">
+            <SplitPane split="horizontal" defaultSize="75%">
                 <SingleEditorView {...this.props}/>
                 <TabbedConsoleView />
             </SplitPane>
