@@ -1,6 +1,8 @@
 const EventEmitter = require('events');
 const Promise = require('promise');
 const fs = require('fs');
+const ncp = require('ncp').ncp;
+ncp.limit = 16;
 
 const WORKSPACE_DIR = __dirname + '/workspaces';
 const RESOURCES_DIR = __dirname + '/resources';
@@ -25,7 +27,17 @@ class WorkspaceManager extends EventEmitter {
                     }
                     else {
                         // Start copying the templates as well
-                        fulfill();
+                        ncp(WORKSPACE_TEMPLATE_DIR, this.d_workspacePath, (err) => {
+                            if (err) {
+                                reject({
+                                    message: 'Could not create workspace for ' + workspaceName,
+                                    error: err
+                                });
+                            }
+                            else {
+                                fulfill();
+                            }
+                        })
                     }
                 })
             }

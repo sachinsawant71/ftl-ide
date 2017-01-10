@@ -44,26 +44,26 @@ workspaceCheckPromise.then(() => {
     return templateCheckPromise;
 })
 .then(() => {
-    console.log('All good');
+    start();
 })
 .catch((err) => {
     console.log('Error: ', err);
 });
 
+function start() {
+    var sessionManager = new SessionManager();
 
-var sessionManager = new SessionManager();
+    io.on('connection', function (socket) {
+        console.log('socket connection');
+        sessionManager.createSession(socket);
+    });
 
-io.on('connection', function (socket) {
-    console.log('socket connection');
-    sessionManager.createSession(socket);
-});
+    app.get('/', function(req, res){
+      res.send('<h1>Hello world</h1>');
+    });
 
-app.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
-});
+    http.listen(3001, function(){
+      console.log('listening on *:3001');
+    });
+}
 
-http.listen(3001, function(){
-  console.log('listening on *:3001');
-});
-
-console.log('Current Directory: ', __dirname);
