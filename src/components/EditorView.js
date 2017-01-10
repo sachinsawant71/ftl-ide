@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import 'codemirror/mode/clike/clike';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/edit/closebrackets';
 import { NonIdealState, Spinner } from '@blueprintjs/core';
 
 var DEFAULT_EDITOR_OPTIONS = {
@@ -9,7 +11,9 @@ var DEFAULT_EDITOR_OPTIONS = {
     mode: 'text/x-java',
     indentUnit: 4,
     autoSave: true,
-    preserveScrollPosition: true
+    preserveScrollPosition: true,
+    matchBrackets: true,
+    autoCloseBrackets: true
 };
 
 /**
