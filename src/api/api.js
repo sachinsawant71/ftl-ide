@@ -66,10 +66,16 @@ class RemoteAPI {
         }.bind(this));
 
         this.initialized = true;
+
+        console.log('RemoteAPI Initialized...');
     }
 
     handleResponse(response) {
         console.log('response: ', response);
+        if (this.requestCallbacks[response.guid]) {
+            var callback = this.requestCallbacks[response.guid];
+            callback(response);
+        }
     }
 
     // Returns a promise of a fileinfo struct
@@ -96,7 +102,7 @@ class RemoteAPI {
             type: 'getWorkspace',
         })
         .then(function (workspaceResp) {
-            return generateTreeNodes(workspaceResp.payload);
+            return generateTreeNodes(workspaceResp.payload.children);
         })
         .catch(function () {
             return [];
@@ -174,7 +180,7 @@ class RemoteAPI {
             }
 
             // TBD do the send here
-            this.handleRequest(reqObj);
+            //this.handleRequest(reqObj);
         }.bind(this));
     }
 

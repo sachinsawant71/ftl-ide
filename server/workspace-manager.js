@@ -2,6 +2,9 @@ const EventEmitter = require('events');
 const Promise = require('promise');
 const fs = require('fs');
 const ncp = require('ncp').ncp;
+const FileUtil = require('./file-utils');
+const Constants = require('./constants');
+
 ncp.limit = 16;
 
 const WORKSPACE_DIR = __dirname + '/workspaces';
@@ -9,11 +12,12 @@ const RESOURCES_DIR = __dirname + '/resources';
 const WORKSPACE_TEMPLATE_DIR = RESOURCES_DIR + '/workspace_template'; //This is the template structure for a workspace
 
 class WorkspaceManager extends EventEmitter {
-    constructor(workspaceName) {
+    constructor(workspaceName, template) {
         super();
 
         this.d_workspaceName = workspaceName;
         this.d_workspacePath = WORKSPACE_DIR + '/' + workspaceName;
+        this.d_srcPath = this.d_workspacePath + '/src';
 
         this.d_workspacePromise = new Promise(function (fulfill, reject) {
             if (!fs.existsSync(this.d_workspacePath)) {
@@ -39,13 +43,31 @@ class WorkspaceManager extends EventEmitter {
                             }
                         })
                     }
-                })
+                });
             }
             else {
                 fulfill();
             }
         }.bind(this));
         // Ensure that the workspace is set up
+    }
+
+    get ready() {
+        return this.d_workspacePromise;
+    }
+
+    getSourceWorkspace () {
+        return this.d_workspacePromise
+        .then(() => {
+            return FileUtil.getFolderContents(this.d_srcPath);
+        });
+    }
+
+    getFile(path) {
+        return this.d_workspacePromise
+        .then(() => {
+            return FileUtil.loadFile(this.d_srcPath + path);
+        });
     }
 }
 

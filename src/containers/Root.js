@@ -8,6 +8,8 @@ import { clientIdUpdated, connectionStatusUpdated } from '../actions/SystemActio
 
 const store = configureStore();
 
+RemoteAPI.initialize();
+
 // Get the initial workspace
 RemoteAPI.getWorkspace()
 .then(function (data) {

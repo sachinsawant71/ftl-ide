@@ -62,9 +62,55 @@ class Session extends EventEmitter {
 
     handleRequest(request) {
         // { guid: <string>, payload: <obj>}
-        console.log('handleRequest: ', request);
+        switch (request.payload.type) {
+            case 'getWorkspace': {
+                this.handleGetWorkspace(request);
+            } break;
+            case 'loadFile': {
+                this.handleLoadFile(request);
+            } break;
 
-        // TODO: Send response
+            default: 
+                console.warn('Unhandled request of type: ', request.type);
+        }
+    }
+
+    handleLoadFile(request) {
+
+        this.d_workspaceManager.getFile(request.payload.filePath)
+        .then((fileContents) => {
+            this.sendResponse(request.guid, true, {
+                filePath: request.payload.filePath,
+                contents: fileContents
+            });
+        })
+        .catch((err) => {
+            this.sendResponse(request.guid, false, {
+                reason: 'Could not load file ' + request.payload.filePath,
+                error: err
+            })
+        });
+    }
+
+    handleGetWorkspace(request) {
+        this.d_workspaceManager.getSourceWorkspace()
+        .then((workspace) => {
+            this.sendResponse(request.guid, true, workspace);
+        })
+        .catch((err) => {
+            this.sendResponse(request.guid, false, {
+                reason: 'Could not get workspace',
+                error: err
+            });
+        });
+    }
+
+    sendResponse(requestId, success, payload) {
+        this.d_socket.emit('response', {
+            guid: requestId,
+            success: success,
+            payload: payload
+        });
     }
 }
 

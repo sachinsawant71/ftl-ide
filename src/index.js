@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RemoteAPI from './api/api';
 
 import '@blueprintjs/core/dist/blueprint.css';
 import 'codemirror/lib/codemirror.css';
@@ -8,8 +7,9 @@ import './styles/app.css';
 
 import Root from './containers/Root';
 
-// Set up remote events
-RemoteAPI.initialize();
+// Turn this off in prod
+import PromiseRejectionTracking from 'promise/lib/rejection-tracking';
+PromiseRejectionTracking.enable();
 
 ReactDOM.render(
     <Root />,
