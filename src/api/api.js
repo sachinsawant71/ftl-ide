@@ -109,7 +109,7 @@ class RemoteAPI {
         });
     }
 
-    updateFile(filePath, contents) {
+    updateRemoteFile(filePath, contents) {
         return this.sendRequest({
             type: 'updateFile',
             filePath: filePath,

@@ -92,10 +92,27 @@ function loadFile(path) {
     });
 }
 
+function saveFile(path, contents) {
+    return new Promise((fulfill, reject) => {
+        fs.writeFile(path, contents, (err) => {
+            if (err) {
+                reject({
+                    message: 'Failed to save file ' + path,
+                    error: err
+                });
+            }
+            else {
+                fulfill();
+            }
+        });
+    });
+}
+
 module.exports = {
     getWorkspace: function (workspaceName) {
         return getFolderContents(Constants.Paths.WORKSPACE_DIR + path.sep + workspaceName);
     },
     getFolderContents: getFolderContents,
     loadFile: loadFile,
+    saveFile: saveFile,
 }

@@ -60,17 +60,18 @@ function updateFileComplete(status, filePath) {
     return {
         type: ActionTypes.UPDATE_FILE_COMPLETE,
         status: status,
-        filePath: filePath
+        filePath: filePath,
+        timestamp: Date.now()
     };
 };
 
-export function updateActiveFile(filePath, contents) {
-    console.log('[action] updateActiveFile');
+export function updateRemoteFile(filePath, contents) {
+    console.log('[action] updateRemoteFile');
     return dispatch => {
         dispatch(updateFile(filePath, contents));
 
         // Call into RemoteAPI
-        return RemoteAPI.updateFile(filePath, contents)
+        return RemoteAPI.updateRemoteFile(filePath, contents)
         .then(result => dispatch(updateFileComplete(result.status, result.filePath)))
         .catch(err => dispatch(updateFileComplete(false, undefined))); // TBD Make this better
     };
@@ -82,15 +83,17 @@ export function updateActiveFile(filePath, contents) {
  * @method
  * @param {string} filePath File path of the file being updated
  * @param {string} contents Contents of the file being updated
+ * @param {boolean} scrollChangeEvent If true, this action was triggered by a scroll event
  *
  * TODO: Also update viewport/scrollInfo
  */
-export function updateCachedFile(filePath, contents, scrollInfo) {
+export function updateCachedFile(filePath, contents, scrollInfo, scrollChangeEvent) {
     console.log('[action updateCachedFile]');
     return {
         type: ActionTypes.UPDATE_CACHED_FILE,
         filePath: filePath,
         contents: contents,
         scrollInfo: scrollInfo,
+        scrollChangeEvent: !!scrollChangeEvent
     };
 };

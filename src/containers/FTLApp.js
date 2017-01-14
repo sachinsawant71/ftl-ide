@@ -41,8 +41,8 @@ function mapDispatchToProps(dispatch) {
             console.log('onFileSelected: ', path);
             dispatch(loadActiveFile(path));
         },
-        onEditorUpdated: (editorData) => {
-            dispatch(updateCachedFile(editorData.filePath, editorData.contents, editorData.scrollInfo));
+        onEditorUpdated: (editorData, isScrollEvent) => {
+            dispatch(updateCachedFile(editorData.filePath, editorData.contents, editorData.scrollInfo, isScrollEvent));
             // TBD - Dispatch updated to saveFile and saveRecent
         }
     }

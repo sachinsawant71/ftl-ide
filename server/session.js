@@ -69,10 +69,23 @@ class Session extends EventEmitter {
             case 'loadFile': {
                 this.handleLoadFile(request);
             } break;
+            case 'updateFile': {
+                this.handleUpdateFile(request);
+            } break;
 
-            default: 
-                console.warn('Unhandled request of type: ', request.type);
+            default:
+                console.warn('Unhandled request of type: ', request.payload.type);
         }
+    }
+
+    handleUpdateFile(request) {
+        this.d_workspaceManager.updateFile(request.payload.filePath, request.payload.contents)
+        .then(() => {
+            this.sendResponse(request.guid, true, {});
+        })
+        .catch(() => {
+            this.sendResponse(request.guid, false, {});
+        });
     }
 
     handleLoadFile(request) {

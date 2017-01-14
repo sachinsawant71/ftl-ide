@@ -240,7 +240,7 @@ class EditorView extends Component {
             scrollInfo: this.editorInstance.getScrollInfo()
         });
 
-        this.props.onStateUpdated(this.state);
+        this.props.onStateUpdated(this.state, true);
     }
 
 
