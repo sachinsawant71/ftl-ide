@@ -7,7 +7,7 @@ class FileExplorer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nodes: generateTreeNodes(props.nodes)
+            nodes: generateTreeNodes(props.workspace)
         };
 
         this.handleNodeClick = this.handleNodeClick.bind(this);
@@ -18,7 +18,7 @@ class FileExplorer extends Component {
 
     componentWillReceiveProps(newProps) {
         this.setState({
-            nodes: generateTreeNodes(newProps.nodes)
+            nodes: generateTreeNodes(newProps.workspace)
         });
     }
 

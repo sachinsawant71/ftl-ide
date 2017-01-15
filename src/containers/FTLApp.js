@@ -15,11 +15,7 @@ class FTLApp extends Component {
             <div className="ftl-app-main">
                 <FTLNavBar {...this.props}/>
                 <SplitPane split="vertical" defaultSize="20%" minSize={200} className="ftl-splitter">
-                    <SidebarView nodes={this.props.workspace}
-                                 onFileSelected={this.props.onFileSelected}
-                                 onWorkspaceNodeExpanded={this.props.onWorkspaceNodeExpanded}
-                                 onWorkspaceNodeCollapsed={this.props.onWorkspaceNodeCollapsed}
-                                 onWorkspaceNodeSelected={this.props.onWorkspaceNodeSelected}/>
+                    <SidebarView {...this.props}/>
                     <WorkArea activeFile={this.props.activeFile} onEditorUpdated={this.props.onEditorUpdated} />
                 </SplitPane>
             </div>
