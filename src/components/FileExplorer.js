@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Tree } from '@blueprintjs/core';
 import { FileStructureTypes } from '../Constants';
+import { generateTreeNodes } from '../utils/FileStructureUtils';
 
 class FileExplorer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nodes: props.nodes
+            nodes: generateTreeNodes(props.nodes)
         };
 
         this.handleNodeClick = this.handleNodeClick.bind(this);
@@ -17,7 +18,7 @@ class FileExplorer extends Component {
 
     componentWillReceiveProps(newProps) {
         this.setState({
-            nodes: newProps.nodes
+            nodes: generateTreeNodes(newProps.nodes)
         });
     }
 
@@ -26,6 +27,13 @@ class FileExplorer extends Component {
         this.forEachNode(this.state.nodes, (n) => n.isSelected = false);
 
         nodeData.isSelected = originallySelected === null ? true : !originallySelected;
+
+        if (nodeData.isSelected) {
+            this.props.onWorkspaceNodeSelected(nodeData.key);
+        }
+        else {
+            this.props.onWorkspaceNodeSelected(null);
+        }
 
         if (nodeData.type === FileStructureTypes.ITEM) {
             // key is the path
@@ -39,12 +47,14 @@ class FileExplorer extends Component {
         nodeData.isExpanded = true;
         nodeData.iconName = 'folder-open';
         this.setState(this.state);
+        this.props.onWorkspaceNodeExpanded(nodeData.key);
     }
 
     handleNodeCollapse(nodeData) {
         nodeData.isExpanded = false;
         nodeData.iconName = 'folder-close';
         this.setState(this.state);
+        this.props.onWorkspaceNodeCollapsed(nodeData.key);
     }
 
     forEachNode(nodes, callback) {

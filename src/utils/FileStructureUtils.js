@@ -53,6 +53,7 @@ function makeFolder(def, path, handlers) {
         label: folderLabel,
         key: path + '/' + def.label,
         type: FileStructureTypes.FOLDER,
+        isSelected: !!def.isSelected,
         childNodes: []
     }
 
@@ -82,7 +83,8 @@ function makeItem(def, path, handlers) {
         iconName: 'document',
         label: itemLabel,
         key: path + '/' + def.label,
-        type: FileStructureTypes.ITEM
+        type: FileStructureTypes.ITEM,
+        isSelected: !!def.isSelected,
     }
 }
 

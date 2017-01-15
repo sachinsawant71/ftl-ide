@@ -7,6 +7,7 @@ import SidebarView from '../components/SidebarView';
 import { connect } from 'react-redux';
 
 import { loadActiveFile, updateCachedFile } from '../actions/FileActions';
+import { workspaceNodeExpanded, workspaceNodeCollapsed, workspaceNodeSelected } from '../actions/WorkspaceActions';
 
 class FTLApp extends Component {
     render() {
@@ -14,7 +15,11 @@ class FTLApp extends Component {
             <div className="ftl-app-main">
                 <FTLNavBar {...this.props}/>
                 <SplitPane split="vertical" defaultSize="20%" minSize={200} className="ftl-splitter">
-                    <SidebarView nodes={this.props.workspace} onFileSelected={this.props.onFileSelected}/>
+                    <SidebarView nodes={this.props.workspace}
+                                 onFileSelected={this.props.onFileSelected}
+                                 onWorkspaceNodeExpanded={this.props.onWorkspaceNodeExpanded}
+                                 onWorkspaceNodeCollapsed={this.props.onWorkspaceNodeCollapsed}
+                                 onWorkspaceNodeSelected={this.props.onWorkspaceNodeSelected}/>
                     <WorkArea activeFile={this.props.activeFile} onEditorUpdated={this.props.onEditorUpdated} />
                 </SplitPane>
             </div>
@@ -40,6 +45,15 @@ function mapDispatchToProps(dispatch) {
         onFileSelected: (path) => {
             console.log('onFileSelected: ', path);
             dispatch(loadActiveFile(path));
+        },
+        onWorkspaceNodeExpanded: (path) => {
+            dispatch(workspaceNodeExpanded(path));
+        },
+        onWorkspaceNodeCollapsed: (path) => {
+            dispatch(workspaceNodeCollapsed(path));
+        },
+        onWorkspaceNodeSelected: (path) => {
+            dispatch(workspaceNodeSelected(path));
         },
         onEditorUpdated: (editorData, isScrollEvent) => {
             dispatch(updateCachedFile(editorData.filePath, editorData.contents, editorData.scrollInfo, isScrollEvent));

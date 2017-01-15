@@ -15,4 +15,25 @@ export function getWorkspace() {
     }
 }
 
+export function workspaceNodeExpanded(path) {
+    return {
+        type: ActionTypes.WORKSPACE_NODE_EXPANDED,
+        path: path
+    };
+}
+
+export function workspaceNodeCollapsed(path) {
+    return {
+        type: ActionTypes.WORKSPACE_NODE_COLLAPSED,
+        path: path
+    };
+}
+
+export function workspaceNodeSelected(path) {
+    return {
+        type: ActionTypes.WORKSPACE_NODE_SELECTED,
+        path: path,
+    }
+}
+
 export { workspaceUpdated };

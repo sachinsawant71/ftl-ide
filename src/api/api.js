@@ -5,7 +5,6 @@ PromiseRejectionTracking.enable();
 
 import Guid from 'guid';
 import ee from 'event-emitter';
-import { generateTreeNodes } from '../utils/FileStructureUtils';
 
 import IO from 'socket.io-client';
 
@@ -102,7 +101,7 @@ class RemoteAPI {
             type: 'getWorkspace',
         })
         .then(function (workspaceResp) {
-            return generateTreeNodes(workspaceResp.payload.children);
+            return workspaceResp.payload.children;
         })
         .catch(function () {
             return [];
