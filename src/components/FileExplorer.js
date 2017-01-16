@@ -3,11 +3,18 @@ import { Tree } from '@blueprintjs/core';
 import { FileStructureTypes } from '../Constants';
 import { generateTreeNodes } from '../utils/FileStructureUtils';
 
+// TODO - Pass a set of handlers into generateTreeNodes() to dispatch dialog actions
+
 class FileExplorer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nodes: generateTreeNodes(props.workspace)
+            nodes: generateTreeNodes(props.workspace, {
+                addFile: props.onAddFileRequested,
+                addFolder: props.onAddFolderRequested,
+                deleteFile: props.onDeleteFileRequested,
+                deleteFolder: props.onDeleteFolderRequested
+            })
         };
 
         this.handleNodeClick = this.handleNodeClick.bind(this);
@@ -18,7 +25,12 @@ class FileExplorer extends Component {
 
     componentWillReceiveProps(newProps) {
         this.setState({
-            nodes: generateTreeNodes(newProps.workspace)
+            nodes: generateTreeNodes(newProps.workspace, {
+                addFile: newProps.onAddFileRequested,
+                addFolder: newProps.onAddFolderRequested,
+                deleteFile: newProps.onDeleteFileRequested,
+                deleteFolder: newProps.onDeleteFolderRequested
+            })
         });
     }
 

@@ -26,7 +26,7 @@ class FileStructureLabel extends Component {
         else {
             return (
                 <Menu>
-                    <MenuItem onClick={this.handleContextMenu.bind(this, 'deleteFolder', this.props.labelKey)} text="Delete File"/>
+                    <MenuItem onClick={this.handleContextMenu.bind(this, 'deleteFile', this.props.labelKey)} text="Delete File"/>
                 </Menu>
             )
         }
@@ -61,10 +61,10 @@ function makeFolder(def, path, handlers) {
         for (var i = 0; i < def.children.length; i++) {
             var childItem = def.children[i];
             if (childItem.type === FileStructureTypes.FOLDER) {
-                ret.childNodes.push(makeFolder(childItem, path + '/' + def.label));
+                ret.childNodes.push(makeFolder(childItem, path + '/' + def.label, handlers));
             }
             else if (childItem.type === FileStructureTypes.ITEM) {
-                ret.childNodes.push(makeItem(childItem, path + '/' + def.label));
+                ret.childNodes.push(makeItem(childItem, path + '/' + def.label, handlers));
             }
         }
     }
