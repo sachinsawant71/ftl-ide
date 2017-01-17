@@ -8,22 +8,6 @@ import ee from 'event-emitter';
 
 import IO from 'socket.io-client';
 
-// TEST
-import { TestFileStructure } from '../data/TestData'
-
-const DEMO_FILES = {
-    '/com/zhiquanyeo/robot/TestRobot.java': {
-        contents: 'import * from wpilibj;',
-        filePath: '/com/zhiquanyeo/robot/TestRobot.java'
-    },
-    '/com/zhiquanyeo/robot/SomeOtherFile.java': {
-        contents: 'import * from someotherpackage;',
-        filePath: '/com/zhiquanyeo/robot/SomeOtherFile.java'
-    },
-}
-
-// END TEST
-
 const TIMEOUT_DURATION = 2000;
 
 class RemoteAPI {
@@ -178,60 +162,7 @@ class RemoteAPI {
                 console.error('Socket not ready');
             }
 
-            // TBD do the send here
-            //this.handleRequest(reqObj);
         }.bind(this));
-    }
-
-    // DEMO ONLY
-    handleRequest(request) {
-        var callback;
-        if (request.payload.type === 'getWorkspace') {
-            if (this.requestCallbacks[request.guid]) {
-                callback = this.requestCallbacks[request.guid];
-                callback({
-                    guid: request.guid,
-                    success: true,
-                    payload: TestFileStructure
-                });
-            }
-        }
-        else if (request.payload.type === 'updateFile') {
-            if (this.requestCallbacks[request.guid]) {
-                callback = this.requestCallbacks[request.guid];
-                callback({
-                    guid: request.guid,
-                    success: true,
-                    payload: {
-                        status: true,
-                        filePath: request.payload.filePath
-                    }
-                })
-            }
-        }
-        else if (request.payload.type === 'loadFile') {
-            if (this.requestCallbacks[request.guid]) {
-                callback = this.requestCallbacks[request.guid];
-                var data = DEMO_FILES[request.payload.filePath];
-                if (data) {
-                    callback({
-                        guid: request.guid,
-                        success: true,
-                        payload: data
-                    });
-                }
-                else {
-                    callback({
-                        guid: request.guid,
-                        success: false,
-                        payload: {
-                            reason: 'File not found'
-                        }
-                    });
-                }
-            }
-        }
-
     }
 }
 
