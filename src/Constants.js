@@ -1,6 +1,7 @@
 const FileStructureTypes = {
     FOLDER: 'folder',
-    ITEM: 'item'
+    ITEM: 'item',
+    WORKSPACE_ROOT: 'workspace_root'
 };
 
 const ActionTypes = {
