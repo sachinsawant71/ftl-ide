@@ -6,14 +6,42 @@ import SidebarView from '../components/SidebarView';
 
 import { connect } from 'react-redux';
 
-import { Dialog, Intent, Alert } from '@blueprintjs/core';
+import { Dialog, Intent, Alert, Button } from '@blueprintjs/core';
 
 import { loadActiveFile, updateCachedFile } from '../actions/FileActions';
 import { workspaceNodeExpanded, workspaceNodeCollapsed, workspaceNodeSelected } from '../actions/WorkspaceActions';
 import { showAddFileDialog, showAddFolderDialog, showDeleteFileDialog, showDeleteFolderDialog, hideFileDialogs } from '../actions/DialogActions';
 
+function toTitleCase(str) {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+}
+
 class FTLApp extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            newEntityName: ''
+        };
+    }
+
+    handleNewEntityNameChange(e) {
+        this.setState({
+            newEntityName: e.target.value
+        });
+    }
+
+    handleAddNewEntity(type, basePath, newName) {
+        this.props.handleAdd(type, basePath, newName);
+        this.setState({
+            newEntityName: ''
+        });
+    }
+
     render() {
+        var addDialogStr = this.props.dialogState.addDialogType ? 
+                           toTitleCase(this.props.dialogState.addDialogType) : '';
+
         return (
             <div className="ftl-app-main">
                 <FTLNavBar {...this.props}/>
@@ -24,10 +52,25 @@ class FTLApp extends Component {
 
                 <Dialog inline={false}
                         isOpen={this.props.dialogState.addDialogShown}
+                        canOutsideClickClose={false}
+                        canEscapeKeyClose={false}
                         onClose={this.props.closeDialog}
-                        title={"Add " + this.props.dialogState.addDialogType}>
+                        title={"Add " + addDialogStr}>
                     <div className="pt-dialog-body">
-                        Some content
+                        <p>{addDialogStr + " Name: "}</p>
+                        <input onChange={this.handleNewEntityNameChange.bind(this)} className="pt-input pt-intent-primary pt-fill" type="text"/>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button onClick={this.props.closeDialog} 
+                                    text="Cancel" />
+                            <Button intent={Intent.PRIMARY}
+                                    onClick={this.handleAddNewEntity.bind(this, 
+                                                        this.props.dialogState.addDialogType, 
+                                                        this.props.dialogState.addPath,
+                                                        this.state.newEntityName)}
+                                    text="Add"/>
+                        </div>
                     </div>
                 </Dialog>
                 <Alert isOpen={this.props.dialogState.deleteDialogShown}
@@ -79,6 +122,9 @@ function mapDispatchToProps(dispatch) {
 
         closeDialog: () => {
             dispatch(hideFileDialogs());
+        },
+        handleAdd: (type, basePath, newName) => {
+            console.log('Adding new ' + type + ' to ' + basePath + ' with name ' + newName);
         },
         handleDelete: (path) => {
             console.log('Handling delete of ', path);
