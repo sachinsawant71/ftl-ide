@@ -20,6 +20,48 @@ function updateExpandedState(nodes, pathArray, expanded) {
     }
 }
 
+function getExpandedNodes(nodes) {
+    var ret = {};
+
+    function _traverse(node, currPath) {
+        var nodePath = currPath + '/' + node.label
+        if (node.isExpanded) {
+            ret[nodePath] = true;
+        }
+
+        if (node.children) {
+            for (var i = 0; i < node.children.length; i++) {
+                _traverse(node.children[i], nodePath);
+            }
+        }
+    }
+
+    for (var i = 0; i < nodes.length; i++) {
+        _traverse(nodes[i], '');
+    }
+
+    return ret;
+}
+
+function restoreExpandedNodes(nodes, expandedNodes) {
+    function _traverse(node, currPath) {
+        var nodePath = currPath + '/' + node.label;
+        if (expandedNodes[nodePath]) {
+            node.isExpanded = true;
+        }
+
+        if (node.children) {
+            for (var i = 0; i < node.children.length; i++) {
+                _traverse(node.children[i], nodePath);
+            }
+        }
+    }
+
+    for (var i = 0; i < nodes.length; i++) {
+        _traverse(nodes[i], '');
+    }
+}
+
 function updateSelectedState(nodes, pathArray) {
 
     // Traverse fully
@@ -65,9 +107,12 @@ function workspace(state = [], action) {
     var updatedNodes, pathParts;
 
     switch (action.type) {
-        // TODO - Do something smarter here to maintain state
         case ActionTypes.WORKSPACE_UPDATED:
-            return action.fileStructure.slice(0);
+            var oldExpandedNodes = getExpandedNodes(state);
+            updatedNodes = action.fileStructure.slice(0);
+            restoreExpandedNodes(updatedNodes, oldExpandedNodes);
+
+            return updatedNodes;
         case ActionTypes.WORKSPACE_NODE_EXPANDED:
             updatedNodes = state.slice(0);
             pathParts = action.path.split('/').slice(1);
