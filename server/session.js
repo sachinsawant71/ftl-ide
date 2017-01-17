@@ -24,6 +24,13 @@ class Session extends EventEmitter {
         socket.on('request', this.handleRequest.bind(this));
 
         socket.on('recap', this.handleRecap.bind(this));
+
+        this.d_workspaceManager.on('workspaceChanged', () => {
+            this.d_workspaceManager.getSourceWorkspace()
+            .then((workspace) => {
+                socket.emit('workspaceUpdated', workspace);
+            })
+        });
     }
 
     get id() {
@@ -72,10 +79,22 @@ class Session extends EventEmitter {
             case 'updateFile': {
                 this.handleUpdateFile(request);
             } break;
-
+            case 'addFile': {
+                this.handleAddFile(request);
+            } break;
             default:
                 console.warn('Unhandled request of type: ', request.payload.type);
         }
+    }
+
+    handleAddFile(request) {
+        this.d_workspaceManager.addFile(request.payload.filePath, request.payload.options)
+        .then(() => {
+            this.sendResponse(request.guid, true, { filePath: request.payload.filePath });
+        })
+        .catch(() => {
+            this.sendResponse(request.guid, false, { filePath: request.payload.filePath });
+        });
     }
 
     handleUpdateFile(request) {

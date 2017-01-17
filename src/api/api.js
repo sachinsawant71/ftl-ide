@@ -48,6 +48,10 @@ class RemoteAPI {
             this.emit('apiDisconnected');
         }.bind(this));
 
+        this.socket.on('workspaceUpdated', (workspace) => {
+            this.emit('workspaceUpdated', workspace.children);
+        })
+
         this.initialized = true;
 
         console.log('RemoteAPI Initialized...');
@@ -110,6 +114,26 @@ class RemoteAPI {
                 filePath: filePath
             };
         });
+    }
+
+    addRemoteFile(filePath, options) {
+        return this.sendRequest({
+            type: 'addFile',
+            filePath: filePath,
+            options: options
+        })
+        .then((updateResp) => {
+            return {
+                status: true,
+                filePath: filePath
+            }
+        })
+        .catch(() => {
+            return {
+                status: false,
+                filePath: filePath
+            }
+        })
     }
 
     // The idea here is that we create a callback with the guid that will get

@@ -1,5 +1,6 @@
 import { ActionTypes } from '../Constants';
 import RemoteAPI from '../api/api';
+import { hideFileDialogs } from './DialogActions';
 
 function loadFile(filePath) {
     return {
@@ -97,3 +98,14 @@ export function updateCachedFile(filePath, contents, scrollInfo, scrollChangeEve
         scrollChangeEvent: !!scrollChangeEvent
     };
 };
+
+export function addNewFile(filePath) {
+    console.log('[action addNewFile]');
+    return dispatch => {
+        dispatch(hideFileDialogs());
+
+        return RemoteAPI.addRemoteFile(filePath, {})
+        //.then(result => dispatch())
+        // TODO - This should fire off some UI state change
+    }
+}

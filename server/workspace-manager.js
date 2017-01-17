@@ -76,6 +76,16 @@ class WorkspaceManager extends EventEmitter {
             return FileUtil.saveFile(this.d_srcPath + path, contents);
         });
     }
+
+    addFile(path, options) {
+        return this.d_workspacePromise
+        .then(() => {
+            return FileUtil.addFile(this.d_srcPath + path, options)
+            .then(() => {
+                this.emit('workspaceChanged');
+            });
+        });
+    }
 }
 
 module.exports = WorkspaceManager;

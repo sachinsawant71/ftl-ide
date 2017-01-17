@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { Dialog, Intent, Alert, Button } from '@blueprintjs/core';
 
-import { loadActiveFile, updateCachedFile } from '../actions/FileActions';
+import { loadActiveFile, updateCachedFile, addNewFile } from '../actions/FileActions';
 import { workspaceNodeExpanded, workspaceNodeCollapsed, workspaceNodeSelected } from '../actions/WorkspaceActions';
 import { showAddFileDialog, showAddFolderDialog, showDeleteFileDialog, showDeleteFolderDialog, hideFileDialogs } from '../actions/DialogActions';
 
@@ -125,6 +125,7 @@ function mapDispatchToProps(dispatch) {
         },
         handleAdd: (type, basePath, newName) => {
             console.log('Adding new ' + type + ' to ' + basePath + ' with name ' + newName);
+            dispatch(addNewFile(basePath + '/' + newName));
         },
         handleDelete: (path) => {
             console.log('Handling delete of ', path);

@@ -108,6 +108,23 @@ function saveFile(path, contents) {
     });
 }
 
+function addFile(path, options) {
+    console.log('Requested to add file: ', path);
+    return new Promise((fulfill, reject) => {
+        fs.writeFile(path, '', (err) => {
+            if (err) {
+                reject({
+                    message: 'Failed to create new file ' + path,
+                    error: err
+                });
+            }
+            else {
+                fulfill();
+            }
+        })
+    });
+}
+
 module.exports = {
     getWorkspace: function (workspaceName) {
         return getFolderContents(Constants.Paths.WORKSPACE_DIR + path.sep + workspaceName);
@@ -115,4 +132,5 @@ module.exports = {
     getFolderContents: getFolderContents,
     loadFile: loadFile,
     saveFile: saveFile,
+    addFile: addFile
 }
