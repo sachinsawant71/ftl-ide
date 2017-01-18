@@ -109,3 +109,11 @@ export function addNewFile(filePath) {
         // TODO - This should fire off some UI state change
     }
 }
+
+export function addNewFolder(folderPath) {
+    console.log('[action addNewFolder]');
+    return dispatch => {
+        dispatch(hideFileDialogs());
+        return RemoteAPI.addRemoteFolder(folderPath);
+    }
+}

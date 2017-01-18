@@ -82,9 +82,22 @@ class Session extends EventEmitter {
             case 'addFile': {
                 this.handleAddFile(request);
             } break;
+            case 'addFolder': {
+                this.handleAddFolder(request);
+            } break;
             default:
                 console.warn('Unhandled request of type: ', request.payload.type);
         }
+    }
+
+    handleAddFolder(request) {
+        this.d_workspaceManager.addFolder(request.payload.folderPath)
+        .then(() => {
+            this.sendResponse(request.guid, true, { folderPath: request.payload.folderPath });
+        })
+        .catch(() => {
+            this.sendResponse(request.guid, false, { folderPath: request.payload.folderPath });
+        });
     }
 
     handleAddFile(request) {

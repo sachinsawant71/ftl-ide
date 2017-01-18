@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { Dialog, Intent, Alert, Button } from '@blueprintjs/core';
 
-import { loadActiveFile, updateCachedFile, addNewFile } from '../actions/FileActions';
+import { loadActiveFile, updateCachedFile, addNewFile, addNewFolder } from '../actions/FileActions';
 import { workspaceNodeExpanded, workspaceNodeCollapsed, workspaceNodeSelected } from '../actions/WorkspaceActions';
 import { showAddFileDialog, showAddFolderDialog, showDeleteFileDialog, showDeleteFolderDialog, hideFileDialogs } from '../actions/DialogActions';
 
@@ -44,7 +44,7 @@ class FTLApp extends Component {
     }
 
     render() {
-        var addDialogStr = this.props.dialogState.addDialogType ? 
+        var addDialogStr = this.props.dialogState.addDialogType ?
                            toTitleCase(this.props.dialogState.addDialogType) : '';
 
         return (
@@ -67,11 +67,11 @@ class FTLApp extends Component {
                     </div>
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
-                            <Button onClick={this.props.closeDialog} 
+                            <Button onClick={this.props.closeDialog}
                                     text="Cancel" />
                             <Button intent={Intent.PRIMARY}
-                                    onClick={this.handleAddNewEntity.bind(this, 
-                                                        this.props.dialogState.addDialogType, 
+                                    onClick={this.handleAddNewEntity.bind(this,
+                                                        this.props.dialogState.addDialogType,
                                                         this.props.dialogState.addPath,
                                                         this.state.newEntityName)}
                                     text="Add"/>
@@ -132,7 +132,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(addNewFile(basePath + '/' + newName));
         },
         handleAddFolder: (basePath, newName) => {
-            console.log('[TODO] Implement handleAddFolder')
+            dispatch(addNewFolder(basePath + '/' + newName));
             // dispatch(addNewFolder(basePath + '/' + newName));
         },
         handleDelete: (path) => {

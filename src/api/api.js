@@ -136,6 +136,25 @@ class RemoteAPI {
         })
     }
 
+    addRemoteFolder(folderPath) {
+        return this.sendRequest({
+            type: 'addFolder',
+            folderPath: folderPath
+        })
+        .then((updateResp) => {
+            return {
+                status: true,
+                folderPath: folderPath
+            };
+        })
+        .catch(() => {
+            return {
+                status: false,
+                folderPath: folderPath
+            };
+        });
+    }
+
     // The idea here is that we create a callback with the guid that will get
     // executed when we receive a response, or we timeout
     sendRequest(request) {

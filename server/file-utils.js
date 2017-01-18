@@ -23,7 +23,6 @@ function getFolderContents(folderPath) {
             }
             else {
                 numLeft = files.length;
-
                 // We have an array of files
                 files.forEach(function(itemName, idx) {
                     // run stat
@@ -50,10 +49,14 @@ function getFolderContents(folderPath) {
                         _checkDone();
                     });
                 })
+
+                if (files.length === 0) {
+                    _checkDone();
+                }
             }
 
             function _checkDone() {
-                if (numLeft === 0) {
+                if (numLeft <= 0) {
                     Promise.all(filePromises)
                     .then(function (childItems) {
                         childItems.sort(function (a, b) {
@@ -121,7 +124,24 @@ function addFile(path, options) {
             else {
                 fulfill();
             }
-        })
+        });
+    });
+}
+
+function addFolder(path) {
+    console.log('Requested to add folder: ', path);
+    return new Promise((fulfill, reject) => {
+        fs.mkdir(path, (err) => {
+            if (err) {
+                reject({
+                    message: 'Failed to create new file ' + path,
+                    error: err
+                });
+            }
+            else {
+                fulfill();
+            }
+        });
     });
 }
 
@@ -132,5 +152,6 @@ module.exports = {
     getFolderContents: getFolderContents,
     loadFile: loadFile,
     saveFile: saveFile,
-    addFile: addFile
+    addFile: addFile,
+    addFolder: addFolder
 }
