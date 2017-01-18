@@ -25,6 +25,15 @@ class FTLApp extends Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        console.log('component did update');
+        if (!prevProps.dialogState.addDialogShown && this.props.dialogState.addDialogShown) {
+            if (this.refs.newName) {
+                this.refs.newName.focus();
+            }
+        }
+    }
+
     handleNewEntityNameChange(e) {
         this.setState({
             newEntityName: e.target.value
@@ -56,14 +65,14 @@ class FTLApp extends Component {
                 </SplitPane>
 
                 <Dialog inline={false}
+                        iconName="add"
                         isOpen={this.props.dialogState.addDialogShown}
                         canOutsideClickClose={false}
-                        canEscapeKeyClose={false}
                         onClose={this.props.closeDialog}
                         title={"Add " + addDialogStr}>
                     <div className="pt-dialog-body">
                         <p>{addDialogStr + " Name: "}</p>
-                        <input onChange={this.handleNewEntityNameChange.bind(this)} className="pt-input pt-intent-primary pt-fill" type="text"/>
+                        <input ref="newName" onChange={this.handleNewEntityNameChange.bind(this)} className="pt-input pt-intent-primary pt-fill" type="text"/>
                     </div>
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
@@ -80,6 +89,7 @@ class FTLApp extends Component {
                 </Dialog>
                 <Alert isOpen={this.props.dialogState.deleteDialogShown}
                        intent={Intent.PRIMARY}
+                       iconName='trash'
                        confirmButtonText="Yes, delete"
                        cancelButtonText="Cancel"
                        onCancel={this.props.closeDialog}
