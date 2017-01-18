@@ -32,7 +32,12 @@ class FTLApp extends Component {
     }
 
     handleAddNewEntity(type, basePath, newName) {
-        this.props.handleAdd(type, basePath, newName);
+        if (type === 'FOLDER') {
+            this.props.handleAddFolder(basePath, newName);
+        }
+        else if (type === 'FILE') {
+            this.props.handleAddFile(basePath, newName);
+        }
         this.setState({
             newEntityName: ''
         });
@@ -123,9 +128,12 @@ function mapDispatchToProps(dispatch) {
         closeDialog: () => {
             dispatch(hideFileDialogs());
         },
-        handleAdd: (type, basePath, newName) => {
-            console.log('Adding new ' + type + ' to ' + basePath + ' with name ' + newName);
+        handleAddFile: (basePath, newName) => {
             dispatch(addNewFile(basePath + '/' + newName));
+        },
+        handleAddFolder: (basePath, newName) => {
+            console.log('[TODO] Implement handleAddFolder')
+            // dispatch(addNewFolder(basePath + '/' + newName));
         },
         handleDelete: (path) => {
             console.log('Handling delete of ', path);
