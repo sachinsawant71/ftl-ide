@@ -1,6 +1,6 @@
 const Constants = require('./constants');
 const Promise = require('promise');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 function getFolderContents(folderPath) {
@@ -145,6 +145,38 @@ function addFolder(path) {
     });
 }
 
+function deleteFile(path) {
+    return new Promise((fulfill, reject) => {
+        fs.unlink(path, (err) => {
+            if (err) {
+                reject({
+                    message: 'Failed to delete file ' + path,
+                    error: err
+                })
+            }
+            else {
+                fulfill();
+            }
+        });
+    });
+}
+
+function deleteFolder(path) {
+    return new Promise((fulfill, reject) => {
+        fs.remove(path, (err) => {
+            if (err) {
+                reject({
+                    message: 'Failed to delete folder ' + path,
+                    error: err
+                });
+            }
+            else {
+                fulfill();
+            }
+        });
+    });
+}
+
 module.exports = {
     getWorkspace: function (workspaceName) {
         return getFolderContents(Constants.Paths.WORKSPACE_DIR + path.sep + workspaceName);
@@ -153,5 +185,7 @@ module.exports = {
     loadFile: loadFile,
     saveFile: saveFile,
     addFile: addFile,
-    addFolder: addFolder
+    addFolder: addFolder,
+    deleteFile: deleteFile,
+    deleteFolder: deleteFolder,
 }

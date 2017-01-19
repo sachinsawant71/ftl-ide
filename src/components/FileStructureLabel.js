@@ -13,13 +13,21 @@ class FileStructureLabel extends Component {
     }
 
     renderContextMenu() {
-        if (this.props.type === FileStructureTypes.FOLDER || this.props.type === FileStructureTypes.WORKSPACE_ROOT) {
+        if (this.props.type === FileStructureTypes.FOLDER) {
             return (
                 <Menu>
                     <MenuItem onClick={this.handleContextMenu.bind(this, 'addFile', this.props.labelKey)} text="Add File"/>
                     <MenuItem onClick={this.handleContextMenu.bind(this, 'addFolder', this.props.labelKey)} text="Add Folder"/>
                     <MenuDivider/>
                     <MenuItem onClick={this.handleContextMenu.bind(this, 'deleteFolder', this.props.labelKey)} text="Delete Folder"/>
+                </Menu>
+            )
+        }
+        else if (this.props.type === FileStructureTypes.WORKSPACE_ROOT) {
+            return (
+                <Menu>
+                    <MenuItem onClick={this.handleContextMenu.bind(this, 'addFile', this.props.labelKey)} text="Add File"/>
+                    <MenuItem onClick={this.handleContextMenu.bind(this, 'addFolder', this.props.labelKey)} text="Add Folder"/>
                 </Menu>
             )
         }

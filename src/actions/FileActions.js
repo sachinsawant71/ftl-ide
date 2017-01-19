@@ -117,3 +117,20 @@ export function addNewFolder(folderPath) {
         return RemoteAPI.addRemoteFolder(folderPath);
     }
 }
+
+export function deleteFolder(folderPath) {
+    console.log('[action deleteFolder]');
+    return dispatch => {
+        dispatch(hideFileDialogs());
+
+        return RemoteAPI.deleteRemoteFolder(folderPath);
+    }
+}
+
+export function deleteFile(filePath) {
+    console.log('[action deleteFile]');
+    return dispatch => {
+        dispatch(hideFileDialogs());
+        return RemoteAPI.deleteRemoteFile(filePath);
+    }
+}

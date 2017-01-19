@@ -85,9 +85,35 @@ class Session extends EventEmitter {
             case 'addFolder': {
                 this.handleAddFolder(request);
             } break;
+            case 'deleteFile': {
+                this.handleDeleteFile(request);
+            } break;
+            case 'deleteFolder': {
+                this.handleDeleteFolder(request);
+            } break;
             default:
                 console.warn('Unhandled request of type: ', request.payload.type);
         }
+    }
+
+    handleDeleteFile(request) {
+        this.d_workspaceManager.deleteFile(request.payload.filePath)
+        .then(() => {
+            this.sendResponse(request.guid, true, { filePath: request.payload.filePath });
+        })
+        .catch(() => {
+            this.sendResponse(request.guid, false, { filePath: request.payload.filePath });
+        });
+    }
+
+    handleDeleteFolder(request) {
+        this.d_workspaceManager.deleteFolder(request.payload.folderPath)
+        .then(() => {
+            this.sendResponse(request.guid, true, { folderPath: request.payload.folderPath });
+        })
+        .catch(() => {
+            this.sendResponse(request.guid, false, { folderPath: request.payload.folderPath });
+        });
     }
 
     handleAddFolder(request) {

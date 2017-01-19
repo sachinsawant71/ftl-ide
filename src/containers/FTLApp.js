@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { Dialog, Intent, Alert, Button } from '@blueprintjs/core';
 
-import { loadActiveFile, updateCachedFile, addNewFile, addNewFolder } from '../actions/FileActions';
+import { loadActiveFile, updateCachedFile, addNewFile, addNewFolder, deleteFile, deleteFolder } from '../actions/FileActions';
 import { workspaceNodeExpanded, workspaceNodeCollapsed, workspaceNodeSelected } from '../actions/WorkspaceActions';
 import { showAddFileDialog, showAddFolderDialog, showDeleteFileDialog, showDeleteFolderDialog, hideFileDialogs } from '../actions/DialogActions';
 
@@ -26,7 +26,6 @@ class FTLApp extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('component did update');
         if (!prevProps.dialogState.addDialogShown && this.props.dialogState.addDialogShown) {
             if (this.refs.newName) {
                 this.refs.newName.focus();
@@ -40,13 +39,10 @@ class FTLApp extends Component {
         });
     }
 
+    // We only need this here so we can set the state
     handleAddNewEntity(type, basePath, newName) {
-        if (type === 'FOLDER') {
-            this.props.handleAddFolder(basePath, newName);
-        }
-        else if (type === 'FILE') {
-            this.props.handleAddFile(basePath, newName);
-        }
+        this.props.handleAdd(type, basePath, newName);
+
         this.setState({
             newEntityName: ''
         });
@@ -93,7 +89,9 @@ class FTLApp extends Component {
                        confirmButtonText="Yes, delete"
                        cancelButtonText="Cancel"
                        onCancel={this.props.closeDialog}
-                       onConfirm={this.props.handleDelete.bind(undefined, this.props.dialogState.deletePath)}>
+                       onConfirm={this.props.handleDelete.bind(undefined,
+                                            this.props.dialogState.deleteDialogType,
+                                            this.props.dialogState.deletePath)}>
                        <p>Are you sure you want to delete {this.props.dialogState.deletePath}?</p>
 
                 </Alert>
@@ -119,7 +117,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onFileSelected: (path) => {
-            console.log('onFileSelected: ', path);
             dispatch(loadActiveFile(path));
         },
         onWorkspaceNodeExpanded: (path) => {
@@ -138,17 +135,27 @@ function mapDispatchToProps(dispatch) {
         closeDialog: () => {
             dispatch(hideFileDialogs());
         },
-        handleAddFile: (basePath, newName) => {
-            dispatch(addNewFile(basePath + '/' + newName));
+        handleAdd: (type, basePath, newName) => {
+            if (type === 'FOLDER') {
+                dispatch(addNewFolder(basePath + '/' + newName));
+            }
+            else if (type === 'FILE') {
+                dispatch(addNewFile(basePath + '/' + newName));
+            }
+            else {
+                dispatch(hideFileDialogs());
+            }
         },
-        handleAddFolder: (basePath, newName) => {
-            dispatch(addNewFolder(basePath + '/' + newName));
-            // dispatch(addNewFolder(basePath + '/' + newName));
-        },
-        handleDelete: (path) => {
-            console.log('Handling delete of ', path);
-            // TODO - This should be a thunk that closes the dialog first, and then updates
-            dispatch(hideFileDialogs());
+        handleDelete: (type, path) => {
+            if (type === 'FOLDER') {
+                dispatch(deleteFolder(path));
+            }
+            else if (type === 'FILE') {
+                dispatch(deleteFile(path));
+            }
+            else {
+                dispatch(hideFileDialogs());
+            }
         },
         onAddFileRequested: (path) => {
             dispatch(showAddFileDialog(path));
@@ -157,13 +164,11 @@ function mapDispatchToProps(dispatch) {
             dispatch(showAddFolderDialog(path));
         },
         onDeleteFileRequested: (path) => {
-            console.log('delete file you say');
             dispatch(showDeleteFileDialog(path));
         },
         onDeleteFolderRequested: (path) => {
             dispatch(showDeleteFolderDialog(path));
         }
-        // TODO - Dispatch events for showing/hiding the various dialogs
     }
 }
 
