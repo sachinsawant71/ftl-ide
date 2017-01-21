@@ -29,7 +29,7 @@ class RemoteAPI {
         this.socket.on('response', this.handleResponse.bind(this));
 
         // Out of band messages
-        this.socket.on('registration', function (newId) {
+        this.socket.on('registration', (newId) => {
             if (this.sessionId !== null) {
                 console.warn('Already have a session ID. The server could have died. Sending recap');
             }
@@ -38,19 +38,31 @@ class RemoteAPI {
                 this.sessionId = newId;
                 this.emit('sessionIdUpdated', this.sessionId);
             }
-        }.bind(this));
+        });
 
-        this.socket.on('connect', function () {
+        this.socket.on('configuration', (config) => {
+            // TBD - Placeholder for future config options
+            this.emit('configurationChanged', config);
+        });
+
+        // Handles active client messages. Basically a pass-through
+        this.socket.on('activeClient', (clientState) => {
+            this.emit('activeClientUpdated', clientState);
+        });
+
+        this.socket.on('connect', () => {
             this.emit('apiConnected');
-        }.bind(this));
+        });
 
-        this.socket.on('disconnect', function () {
+        this.socket.on('disconnect', () => {
             this.emit('apiDisconnected');
-        }.bind(this));
+        });
 
         this.socket.on('workspaceUpdated', (workspace) => {
             this.emit('workspaceUpdated', workspace.children);
-        })
+        });
+
+        // TBD - Additional messages
 
         this.initialized = true;
 

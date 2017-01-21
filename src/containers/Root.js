@@ -6,6 +6,7 @@ import RemoteAPI from '../api/api';
 import { workspaceUpdated } from '../actions/WorkspaceActions';
 import { clientIdUpdated, connectionStatusUpdated } from '../actions/SystemActions';
 import { updateRemoteFile } from '../actions/FileActions';
+import { clientSetActive, clientSetInactive } from '../actions/ActiveClientStatusActions';
 
 const store = configureStore();
 
@@ -58,6 +59,15 @@ RemoteAPI.on('sessionIdUpdated', function (sessionId) {
 
 RemoteAPI.on('workspaceUpdated', function (workspaceData) {
     store.dispatch(workspaceUpdated(workspaceData));
+});
+
+RemoteAPI.on('activeClientUpdated', function (activeClientInfo) {
+    if (activeClientInfo.isActive) {
+        store.dispatch(clientSetActive());
+    }
+    else {
+        store.dispatch(clientSetInactive(activeClientInfo.position));
+    }
 });
 
 export default class Root extends Component {

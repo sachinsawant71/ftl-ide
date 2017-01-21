@@ -28,6 +28,8 @@ const ActionTypes = {
     // --- System Related ---
     CONNECTION_STATUS_UPDATED: 'CONNECTION_STATUS_UPDATED', // socket.io connection to backend status
     CLIENT_ID_UPDATED: 'CLIENT_ID_UPDATED', // Whenever we get a new client ID
+    CLIENT_SET_ACTIVE: 'CLIENT_SET_ACTIVE',
+    CLIENT_SET_INACTIVE: 'CLIENT_SET_INACTIVE',
 
     // --- UI Dialog/Alert related ---
     HIDE_FILE_DIALOGS: 'HIDE_FILE_DIALOGS',

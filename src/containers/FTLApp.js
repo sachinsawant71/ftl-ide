@@ -103,14 +103,20 @@ class FTLApp extends Component {
 // TBD Implement
 // This maps the redux store state into props
 function mapStateToProps(state) {
-    const { workspace, activeFile, clientId, connectionState, dialogState } = state; // state here represents the reducers
+    const { workspace,
+            activeFile,
+            clientId,
+            connectionState,
+            dialogState,
+            activeClientStatus } = state; // state here represents the reducers
 
     return {
         clientId,
         workspace,
         activeFile,
         connectionState,
-        dialogState
+        dialogState,
+        activeClientStatus
     }
 }
 

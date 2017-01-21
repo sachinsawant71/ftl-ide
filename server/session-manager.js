@@ -11,7 +11,7 @@ class SessionManager extends EventEmitter {
 
     createSession(socket) {
         var session = new Session(socket);
-        
+
         this.d_sessionMap[session.id] = session;
         this.d_sessionQueue.push(session);
 
@@ -26,6 +26,8 @@ class SessionManager extends EventEmitter {
         socket.on('disconnect', function () {
             this.stopSession(session.id);
         }.bind(this));
+
+        this.updateClientStatus();
 
         return session.id;
     }
@@ -43,6 +45,25 @@ class SessionManager extends EventEmitter {
             session.dispose();
             delete this.d_sessionMap[id];
             session = undefined;
+        }
+
+        this.updateClientStatus();
+    }
+
+    updateClientStatus() {
+        for (var i = 0; i < this.d_sessionQueue.length; i++) {
+            var session = this.d_sessionQueue[i];
+            if (i === 0) {
+                session.socket.emit('activeClient', {
+                    isActive: true
+                });
+            }
+            else {
+                session.socket.emit('activeClient', {
+                    isActive: false,
+                    position: i + 1
+                });
+            }
         }
     }
 };

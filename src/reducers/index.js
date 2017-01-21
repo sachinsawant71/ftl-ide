@@ -4,6 +4,7 @@ import ActiveFileReducer from './ActiveFileReducer';
 import RecentFilesReducer from './RecentFilesReducer';
 import ConnectionStateReducer from './ConnectionStateReducer';
 import DialogStateReducer from './DialogStateReducer';
+import ActiveClientStatusReducer from './ActiveClientStatusReducer';
 
 const rootReducer = combineReducers({
     workspace: WorkspaceReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     recentFiles: RecentFilesReducer,
     connectionState: ConnectionStateReducer,
     dialogState: DialogStateReducer,
+    activeClientStatus: ActiveClientStatusReducer
 });
 
 export default rootReducer;
