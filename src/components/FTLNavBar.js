@@ -11,9 +11,10 @@ class FTLNavBar extends Component {
                                               this.props.connectionState.clientId :
                                               'Unassigned');
 
-        var activeClientMessage = "Hi!";
+        var isActiveClient = !!this.props.activeClientStatus.isActive;
+        var activeClientMessage;
         var relinquishButtonStyle = {};
-        if (this.props.activeClientStatus.isActive) {
+        if (isActiveClient) {
             activeClientMessage = "You are the active user"
             relinquishButtonStyle.display = undefined;
         }
@@ -22,21 +23,29 @@ class FTLNavBar extends Component {
             relinquishButtonStyle.display = "none";
         }
 
+        // NOTE
+        // Build Project button enable-ness is dependent on whether or not a build is in progress
+        // Run Project button enable-ness is dependent on isActiveClient && !projectRunning
+        // Stop Project button enable-ness is dependent on isActiveClient && projectRunning
+        var buildButtonEnable = !this.props.projectStatus.isBuilding;
+        var runButtonEnable = isActiveClient && !this.props.projectStatus.isRunning;
+        var stopButtonEnable = isActiveClient && !!this.props.projectStatus.isRunning;
+
         return (
             <nav className="pt-navbar">
                 <div className="pt-navbar-group pt-align-left">
                     <div className="pt-navbar-heading" style={{marginRight: '30px'}}>FTL IDE</div>
                 </div>
                 <div className="pt-navbar-group pt-align-left">
-                    <Tooltip content="Build Project" position={Position.BOTTOM}>
-                        <AnchorButton className="pt-minimal" iconName="build" />
+                    <Tooltip content="Build Project" position={Position.BOTTOM} isDisabled={!buildButtonEnable}>
+                        <AnchorButton className="pt-minimal" iconName="build" disabled={!buildButtonEnable}/>
                     </Tooltip>
                     <span className="pt-navbar-divider"></span>
-                    <Tooltip content="Run Project" position={Position.BOTTOM}>
-                        <Button className="pt-minimal" iconName="play" />
+                    <Tooltip content="Run Project" position={Position.BOTTOM} isDisabled={!runButtonEnable}>
+                        <Button className="pt-minimal" iconName="play" disabled={!runButtonEnable}/>
                     </Tooltip>
-                    <Tooltip content="Stop Project" position={Position.BOTTOM}>
-                        <Button className="pt-minimal" iconName="stop" />
+                    <Tooltip content="Stop Project" position={Position.BOTTOM} isDisabled={!stopButtonEnable}>
+                        <Button className="pt-minimal" iconName="stop" disabled={!stopButtonEnable}/>
                     </Tooltip>
                 </div>
 

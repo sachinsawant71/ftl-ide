@@ -108,7 +108,8 @@ function mapStateToProps(state) {
             clientId,
             connectionState,
             dialogState,
-            activeClientStatus } = state; // state here represents the reducers
+            activeClientStatus,
+            projectStatus } = state; // state here represents the reducers
 
     return {
         clientId,
@@ -116,7 +117,8 @@ function mapStateToProps(state) {
         activeFile,
         connectionState,
         dialogState,
-        activeClientStatus
+        activeClientStatus,
+        projectStatus
     }
 }
 
