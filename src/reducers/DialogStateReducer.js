@@ -33,6 +33,13 @@ function dialogState(state = {}, action) {
         case ActionTypes.HIDE_FILE_DIALOGS:
             return {};
 
+        case ActionTypes.SHOW_FS_ERROR_DIALOG:
+            return {
+                errorDialogShown: true,
+                errorActionMessage: action.actionMessage,
+                errorMessage: action.errorMessage
+            };
+
         default:
             return state;
     }

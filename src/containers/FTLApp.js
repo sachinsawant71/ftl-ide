@@ -95,6 +95,15 @@ class FTLApp extends Component {
                        <p>Are you sure you want to delete {this.props.dialogState.deletePath}?</p>
 
                 </Alert>
+
+                <Alert isOpen={this.props.dialogState.errorDialogShown}
+                       intent={Intent.DANGER}
+                       iconName='error'
+                       confirmButtonTest='OK'
+                       onConfirm={this.props.closeDialog}>
+                       <p>{this.props.dialogState.errorActionMessage}</p>
+                       <p>{this.props.dialogState.errorMessage}</p>
+                </Alert>
             </div>
         );
     }

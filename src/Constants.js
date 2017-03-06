@@ -4,6 +4,11 @@ const FileStructureTypes = {
     WORKSPACE_ROOT: 'workspace_root'
 };
 
+const FSActions = {
+    FS_ADD_FILE: 'FS_ADD_FILE',
+    FS_ADD_FOLDER: 'FS_ADD_FOLDER'
+};
+
 const ActionTypes = {
     // --- File Management Related ---
     LOAD_FILE: 'LOAD_FILE', // Request to load a file
@@ -37,6 +42,7 @@ const ActionTypes = {
     SHOW_ADD_FOLDER_DIALOG: 'SHOW_ADD_FOLDER_DIALOG',
     SHOW_DELETE_FOLDER_DIALOG: 'SHOW_DELETE_FOLDER_DIALOG',
     SHOW_DELETE_FILE_DIALOG: 'SHOW_DELETE_FILE_DIALOG',
+    SHOW_FS_ERROR_DIALOG: 'SHOW_FS_ERROR_DIALOG',
 
     // --- Compile and Run Related ---
     BUILD_PROJECT: 'BUILD_PROJECT',
@@ -47,6 +53,7 @@ const ActionTypes = {
 
 export { FileStructureTypes };
 export { ActionTypes };
+export { FSActions };
 export default {
     FileStructureTypes: FileStructureTypes
 };

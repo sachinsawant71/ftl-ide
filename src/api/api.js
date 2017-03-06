@@ -140,10 +140,11 @@ class RemoteAPI {
                 filePath: filePath
             }
         })
-        .catch(() => {
+        .catch((err) => {
             return {
                 status: false,
-                filePath: filePath
+                filePath: filePath,
+                errType: err.payload.errType
             }
         })
     }
@@ -159,10 +160,11 @@ class RemoteAPI {
                 folderPath: folderPath
             };
         })
-        .catch(() => {
+        .catch((err) => {
             return {
                 status: false,
-                folderPath: folderPath
+                folderPath: folderPath,
+                errType: err.payload.errType
             };
         });
     }

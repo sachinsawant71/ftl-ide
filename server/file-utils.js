@@ -114,34 +114,55 @@ function saveFile(path, contents) {
 function addFile(path, options) {
     console.log('Requested to add file: ', path);
     return new Promise((fulfill, reject) => {
-        fs.writeFile(path, '', (err) => {
-            if (err) {
-                reject({
-                    message: 'Failed to create new file ' + path,
-                    error: err
-                });
-            }
-            else {
-                fulfill();
-            }
-        });
+        // We shouldn't be adding a new file with an existing name
+        if (fs.existsSync(path)) {
+            reject({
+                message: 'File ' + path + ' already exists',
+                error: {
+                    type: 'FS_FILE_ALREADY_EXISTS'
+                }
+            });
+        }
+        else {
+            fs.writeFile(path, '', (err) => {
+                if (err) {
+                    reject({
+                        message: 'Failed to create new file ' + path,
+                        error: err
+                    });
+                }
+                else {
+                    fulfill();
+                }
+            });
+        }
     });
 }
 
 function addFolder(path) {
     console.log('Requested to add folder: ', path);
     return new Promise((fulfill, reject) => {
-        fs.mkdir(path, (err) => {
-            if (err) {
-                reject({
-                    message: 'Failed to create new file ' + path,
-                    error: err
-                });
-            }
-            else {
-                fulfill();
-            }
-        });
+        if (fs.existsSync(path)) {
+            reject({
+                message: 'Folder ' + path + ' already exists',
+                error: {
+                    type: 'FS_FILE_ALREADY_EXISTS'
+                }
+            });
+        }
+        else {
+            fs.mkdir(path, (err) => {
+                if (err) {
+                    reject({
+                        message: 'Failed to create new file ' + path,
+                        error: err
+                    });
+                }
+                else {
+                    fulfill();
+                }
+            });
+        }
     });
 }
 

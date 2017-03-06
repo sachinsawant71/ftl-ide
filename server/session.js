@@ -121,8 +121,15 @@ class Session extends EventEmitter {
         .then(() => {
             this.sendResponse(request.guid, true, { folderPath: request.payload.folderPath });
         })
-        .catch(() => {
-            this.sendResponse(request.guid, false, { folderPath: request.payload.folderPath });
+        .catch((err) => {
+            var resp = {
+                folderPath: request.payload.folderPath
+            }
+            if (err && err.error && err.error.type === 'FS_FILE_ALREADY_EXISTS') {
+                resp.errType = FS_FILE_ALREADY_EXISTS;
+            }
+
+            this.sendResponse(request.guid, false, resp);
         });
     }
 
@@ -131,8 +138,14 @@ class Session extends EventEmitter {
         .then(() => {
             this.sendResponse(request.guid, true, { filePath: request.payload.filePath });
         })
-        .catch(() => {
-            this.sendResponse(request.guid, false, { filePath: request.payload.filePath });
+        .catch((err) => {
+            var resp = {
+                filePath: request.payload.filePath,
+            }
+            if (err && err.error && err.error.type === 'FS_FILE_ALREADY_EXISTS') {
+                resp.errType = 'FS_FILE_ALREADY_EXISTS'
+            }
+            this.sendResponse(request.guid, false, resp);
         });
     }
 

@@ -1,6 +1,6 @@
-import { ActionTypes } from '../Constants';
+import { ActionTypes, FSActions } from '../Constants';
 import RemoteAPI from '../api/api';
-import { hideFileDialogs } from './DialogActions';
+import { hideFileDialogs, showFileSystemErrorDialog } from './DialogActions';
 
 function loadFile(filePath) {
     return {
@@ -105,8 +105,16 @@ export function addNewFile(filePath) {
         dispatch(hideFileDialogs());
 
         return RemoteAPI.addRemoteFile(filePath, {})
-        //.then(result => dispatch())
-        // TODO - This should fire off some UI state change
+        .then(result => {
+            if (result.status === false) {
+                // We really only care about an error state (i.e. status = false)
+                var errMsg = 'A general file system error occurred.';
+                if (result.errType === 'FS_FILE_ALREADY_EXISTS') {
+                    errMsg = 'The file/folder already exists.'
+                }
+                dispatch(showFileSystemErrorDialog(filePath, FSActions.FS_ADD_FILE, errMsg))
+            }
+        });
     }
 }
 
@@ -114,7 +122,17 @@ export function addNewFolder(folderPath) {
     console.log('[action addNewFolder]');
     return dispatch => {
         dispatch(hideFileDialogs());
-        return RemoteAPI.addRemoteFolder(folderPath);
+        return RemoteAPI.addRemoteFolder(folderPath)
+        .then(result => {
+            if (result.status === false) {
+                // We really only care about an error state (i.e. status = false)
+                var errMsg = 'A general file system error occurred.';
+                if (result.errType === 'FS_FILE_ALREADY_EXISTS') {
+                    errMsg = 'The file/folder already exists.'
+                }
+                dispatch(showFileSystemErrorDialog(folderPath, FSActions.FS_ADD_FOLDER, errMsg))
+            }
+        });
     }
 }
 
